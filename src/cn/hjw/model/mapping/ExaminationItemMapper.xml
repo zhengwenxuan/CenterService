@@ -1,0 +1,490 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hjw.dao.ifc.ExaminationItemMapper">
+  <resultMap id="BaseResultMap" type="cn.hjw.model.ExaminationItem">
+    <id column="objectId" jdbcType="CHAR" property="objectId" />
+    <result column="item_num" jdbcType="CHAR" property="itemNum" />
+    <result column="item_name" jdbcType="VARCHAR" property="itemName" />
+    <result column="item_eng_name" jdbcType="VARCHAR" property="itemEngName" />
+    <result column="item_unitunit" jdbcType="CHAR" property="itemUnitunit" />
+    <result column="item_pinyin" jdbcType="VARCHAR" property="itemPinyin" />
+    <result column="exam_codecode" jdbcType="CHAR" property="examCodecode" />
+    <result column="view_codecode" jdbcType="CHAR" property="viewCodecode" />
+    <result column="item_category" jdbcType="CHAR" property="itemCategory" />
+    <result column="is_print" jdbcType="CHAR" property="isPrint" />
+    <result column="seq_code" jdbcType="CHAR" property="seqCode" />
+    <result column="item_description" jdbcType="VARCHAR" property="itemDescription" />
+    <result column="default_value" jdbcType="CHAR" property="defaultValue" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="ref_img" jdbcType="VARCHAR" property="refImg" />
+    <result column="is_detail" jdbcType="CHAR" property="isDetail" />
+    <result column="is_compare" jdbcType="CHAR" property="isCompare" />
+    <result column="ref_Mmax" jdbcType="CHAR" property="refMmax" />
+    <result column="ref_Mmin" jdbcType="CHAR" property="refMmin" />
+    <result column="ref_Fmin" jdbcType="CHAR" property="refFmin" />
+    <result column="ref_Fmax" jdbcType="CHAR" property="refFmax" />
+    <result column="dang_Fmax" jdbcType="CHAR" property="dangFmax" />
+    <result column="dang_Fmin" jdbcType="CHAR" property="dangFmin" />
+    <result column="dang_Mmax" jdbcType="CHAR" property="dangMmax" />
+    <result column="dang_Mmin" jdbcType="CHAR" property="dangMmin" />
+    <result column="isActive" jdbcType="CHAR" property="isactive" />
+    <result column="item_type" jdbcType="CHAR" property="itemType" />
+    <result column="delete_flg" jdbcType="CHAR" property="deleteFlg" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="creater_id" jdbcType="CHAR" property="createrId" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="updater_id" jdbcType="CHAR" property="updaterId" />
+    <result column="delete_date" jdbcType="TIMESTAMP" property="deleteDate" />
+    <result column="deleter_id" jdbcType="CHAR" property="deleterId" />
+    <result column="charge_item_id" jdbcType="CHAR" property="chargeItemId" />
+    <result column="dept_id" jdbcType="CHAR" property="deptId" />
+    <result column="line_chart" jdbcType="CHAR" property="lineChart" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    objectId, item_num, item_name, item_eng_name, item_unitunit, item_pinyin, exam_codecode, 
+    view_codecode, item_category, is_print, seq_code, item_description, default_value, 
+    remark, ref_img, is_detail, is_compare, ref_Mmax, ref_Mmin, ref_Fmin, ref_Fmax, dang_Fmax, 
+    dang_Fmin, dang_Mmax, dang_Mmin, isActive, item_type, delete_flg, create_date, creater_id, 
+    update_date, updater_id, delete_date, deleter_id, charge_item_id, dept_id, line_chart
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from bus_examination_item
+    where objectId = #{objectId,jdbcType=CHAR}
+  </select>
+  <select id="selectByCondition" parameterType="cn.hjw.model.ExaminationItem" resultMap="BaseResultMap">
+		select
+		 <include refid="Base_Column_List" />
+		from bus_examination_item where 1=1
+		<if test="itemNum!=null and itemNum!=''">
+		and item_num=#{itemNum}				
+			</if>
+			<if test="itemName!=null and itemName!=''">
+		and item_name like '%${itemName}%'				
+			</if>
+			
+	</select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from bus_examination_item
+    where objectId = #{objectId,jdbcType=CHAR}
+  </delete>
+     <delete id="deleteByCollection" parameterType="java.util.List">
+    delete from bus_examination_item
+    where objectId in 
+    <foreach collection="list" item = "itemId" open="(" separator="," close=")">
+    #{itemId}
+    </foreach>
+  </delete>
+  <insert id="insert" parameterType="cn.hjw.model.ExaminationItem">
+    insert into bus_examination_item (objectId, item_num, item_name, 
+      item_eng_name, item_unitunit, item_pinyin, 
+      exam_codecode, view_codecode, item_category, 
+      is_print, seq_code, item_description, 
+      default_value, remark, ref_img, 
+      is_detail, is_compare, ref_Mmax, 
+      ref_Mmin, ref_Fmin, ref_Fmax, dang_Fmax, 
+      dang_Fmin, dang_Mmax, dang_Mmin, 
+      isActive, item_type, delete_flg, 
+      create_date, creater_id, update_date, 
+      updater_id, delete_date, deleter_id, 
+      charge_item_id, dept_id, line_chart
+      )
+    values (#{objectId,jdbcType=CHAR}, #{itemNum,jdbcType=CHAR}, #{itemName,jdbcType=VARCHAR}, 
+      #{itemEngName,jdbcType=VARCHAR}, #{itemUnitunit,jdbcType=CHAR}, #{itemPinyin,jdbcType=VARCHAR}, 
+      #{examCodecode,jdbcType=CHAR}, #{viewCodecode,jdbcType=CHAR}, #{itemCategory,jdbcType=CHAR}, 
+      #{isPrint,jdbcType=CHAR}, #{seqCode,jdbcType=CHAR}, #{itemDescription,jdbcType=VARCHAR}, 
+      #{defaultValue,jdbcType=CHAR}, #{remark,jdbcType=VARCHAR}, #{refImg,jdbcType=VARCHAR}, 
+      #{isDetail,jdbcType=CHAR}, #{isCompare,jdbcType=CHAR}, #{refMmax,jdbcType=CHAR}, 
+      #{refMmin,jdbcType=CHAR}, #{refFmin,jdbcType=CHAR}, #{refFmax,jdbcType=CHAR}, #{dangFmax,jdbcType=CHAR}, 
+      #{dangFmin,jdbcType=CHAR}, #{dangMmax,jdbcType=CHAR}, #{dangMmin,jdbcType=CHAR}, 
+      #{isactive,jdbcType=CHAR}, #{itemType,jdbcType=CHAR}, #{deleteFlg,jdbcType=CHAR}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{createrId,jdbcType=CHAR}, #{updateDate,jdbcType=TIMESTAMP}, 
+      #{updaterId,jdbcType=CHAR}, #{deleteDate,jdbcType=TIMESTAMP}, #{deleterId,jdbcType=CHAR}, 
+      #{chargeItemId,jdbcType=CHAR}, #{deptId,jdbcType=CHAR}, #{lineChart,jdbcType=CHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.hjw.model.ExaminationItem">
+    insert into bus_examination_item
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="objectId != null">
+        objectId,
+      </if>
+      <if test="itemNum != null">
+        item_num,
+      </if>
+      <if test="itemName != null">
+        item_name,
+      </if>
+      <if test="itemEngName != null">
+        item_eng_name,
+      </if>
+      <if test="itemUnitunit != null">
+        item_unitunit,
+      </if>
+      <if test="itemPinyin != null">
+        item_pinyin,
+      </if>
+      <if test="examCodecode != null">
+        exam_codecode,
+      </if>
+      <if test="viewCodecode != null">
+        view_codecode,
+      </if>
+      <if test="itemCategory != null">
+        item_category,
+      </if>
+      <if test="isPrint != null">
+        is_print,
+      </if>
+      <if test="seqCode != null">
+        seq_code,
+      </if>
+      <if test="itemDescription != null">
+        item_description,
+      </if>
+      <if test="defaultValue != null">
+        default_value,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="refImg != null and refImg!=''">
+        ref_img,
+      </if>
+      <if test="isDetail != null">
+        is_detail,
+      </if>
+      <if test="isCompare != null">
+        is_compare,
+      </if>
+      <if test="refMmax != null">
+        ref_Mmax,
+      </if>
+      <if test="refMmin != null">
+        ref_Mmin,
+      </if>
+      <if test="refFmin != null">
+        ref_Fmin,
+      </if>
+      <if test="refFmax != null">
+        ref_Fmax,
+      </if>
+      <if test="dangFmax != null">
+        dang_Fmax,
+      </if>
+      <if test="dangFmin != null">
+        dang_Fmin,
+      </if>
+      <if test="dangMmax != null">
+        dang_Mmax,
+      </if>
+      <if test="dangMmin != null">
+        dang_Mmin,
+      </if>
+      <if test="isactive != null">
+        isActive,
+      </if>
+      <if test="itemType != null">
+        item_type,
+      </if>
+      <if test="deleteFlg != null">
+        delete_flg,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="createrId != null">
+        creater_id,
+      </if>
+      <if test="updateDate != null">
+        update_date,
+      </if>
+      <if test="updaterId != null">
+        updater_id,
+      </if>
+      <if test="deleteDate != null">
+        delete_date,
+      </if>
+      <if test="deleterId != null">
+        deleter_id,
+      </if>
+      <if test="chargeItemId != null">
+        charge_item_id,
+      </if>
+      <if test="deptId != null">
+        dept_id,
+      </if>
+      <if test="lineChart != null">
+        line_chart,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="objectId != null">
+        #{objectId,jdbcType=CHAR},
+      </if>
+      <if test="itemNum != null">
+        #{itemNum,jdbcType=CHAR},
+      </if>
+      <if test="itemName != null">
+        #{itemName,jdbcType=VARCHAR},
+      </if>
+      <if test="itemEngName != null">
+        #{itemEngName,jdbcType=VARCHAR},
+      </if>
+      <if test="itemUnitunit != null">
+        #{itemUnitunit,jdbcType=CHAR},
+      </if>
+      <if test="itemPinyin != null">
+        #{itemPinyin,jdbcType=VARCHAR},
+      </if>
+      <if test="examCodecode != null">
+        #{examCodecode,jdbcType=CHAR},
+      </if>
+      <if test="viewCodecode != null">
+        #{viewCodecode,jdbcType=CHAR},
+      </if>
+      <if test="itemCategory != null">
+        #{itemCategory,jdbcType=CHAR},
+      </if>
+      <if test="isPrint != null">
+        #{isPrint,jdbcType=CHAR},
+      </if>
+      <if test="seqCode != null">
+        #{seqCode,jdbcType=CHAR},
+      </if>
+      <if test="itemDescription != null">
+        #{itemDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="defaultValue != null">
+        #{defaultValue,jdbcType=CHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="refImg != null and refImg!=''">
+        #{refImg,jdbcType=VARCHAR},
+      </if>
+      <if test="isDetail != null">
+        #{isDetail,jdbcType=CHAR},
+      </if>
+      <if test="isCompare != null">
+        #{isCompare,jdbcType=CHAR},
+      </if>
+      <if test="refMmax != null">
+        #{refMmax,jdbcType=CHAR},
+      </if>
+      <if test="refMmin != null">
+        #{refMmin,jdbcType=CHAR},
+      </if>
+      <if test="refFmin != null">
+        #{refFmin,jdbcType=CHAR},
+      </if>
+      <if test="refFmax != null">
+        #{refFmax,jdbcType=CHAR},
+      </if>
+      <if test="dangFmax != null">
+        #{dangFmax,jdbcType=CHAR},
+      </if>
+      <if test="dangFmin != null">
+        #{dangFmin,jdbcType=CHAR},
+      </if>
+      <if test="dangMmax != null">
+        #{dangMmax,jdbcType=CHAR},
+      </if>
+      <if test="dangMmin != null">
+        #{dangMmin,jdbcType=CHAR},
+      </if>
+      <if test="isactive != null">
+        #{isactive,jdbcType=CHAR},
+      </if>
+      <if test="itemType != null">
+        #{itemType,jdbcType=CHAR},
+      </if>
+      <if test="deleteFlg != null">
+        #{deleteFlg,jdbcType=CHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createrId != null">
+        #{createrId,jdbcType=CHAR},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updaterId != null">
+        #{updaterId,jdbcType=CHAR},
+      </if>
+      <if test="deleteDate != null">
+        #{deleteDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleterId != null">
+        #{deleterId,jdbcType=CHAR},
+      </if>
+      <if test="chargeItemId != null">
+        #{chargeItemId,jdbcType=CHAR},
+      </if>
+      <if test="deptId != null">
+        #{deptId,jdbcType=CHAR},
+      </if>
+      <if test="lineChart != null">
+        #{lineChart,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.hjw.model.ExaminationItem">
+    update bus_examination_item
+    <set>
+      <if test="itemNum != null">
+        item_num = #{itemNum,jdbcType=CHAR},
+      </if>
+      <if test="itemName != null">
+        item_name = #{itemName,jdbcType=VARCHAR},
+      </if>
+      <if test="itemEngName != null">
+        item_eng_name = #{itemEngName,jdbcType=VARCHAR},
+      </if>
+      <if test="itemUnitunit != null">
+        item_unitunit = #{itemUnitunit,jdbcType=CHAR},
+      </if>
+      <if test="itemPinyin != null">
+        item_pinyin = #{itemPinyin,jdbcType=VARCHAR},
+      </if>
+      <if test="examCodecode != null">
+        exam_codecode = #{examCodecode,jdbcType=CHAR},
+      </if>
+      <if test="viewCodecode != null">
+        view_codecode = #{viewCodecode,jdbcType=CHAR},
+      </if>
+      <if test="itemCategory != null">
+        item_category = #{itemCategory,jdbcType=CHAR},
+      </if>
+      <if test="isPrint != null">
+        is_print = #{isPrint,jdbcType=CHAR},
+      </if>
+      <if test="seqCode != null">
+        seq_code = #{seqCode,jdbcType=CHAR},
+      </if>
+      <if test="itemDescription != null">
+        item_description = #{itemDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="defaultValue != null">
+        default_value = #{defaultValue,jdbcType=CHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="refImg != null and refImg!=''">
+        ref_img = #{refImg,jdbcType=VARCHAR},
+      </if>
+      <if test="isDetail != null">
+        is_detail = #{isDetail,jdbcType=CHAR},
+      </if>
+      <if test="isCompare != null">
+        is_compare = #{isCompare,jdbcType=CHAR},
+      </if>
+      <if test="refMmax != null">
+        ref_Mmax = #{refMmax,jdbcType=CHAR},
+      </if>
+      <if test="refMmin != null">
+        ref_Mmin = #{refMmin,jdbcType=CHAR},
+      </if>
+      <if test="refFmin != null">
+        ref_Fmin = #{refFmin,jdbcType=CHAR},
+      </if>
+      <if test="refFmax != null">
+        ref_Fmax = #{refFmax,jdbcType=CHAR},
+      </if>
+      <if test="dangFmax != null">
+        dang_Fmax = #{dangFmax,jdbcType=CHAR},
+      </if>
+      <if test="dangFmin != null">
+        dang_Fmin = #{dangFmin,jdbcType=CHAR},
+      </if>
+      <if test="dangMmax != null">
+        dang_Mmax = #{dangMmax,jdbcType=CHAR},
+      </if>
+      <if test="dangMmin != null">
+        dang_Mmin = #{dangMmin,jdbcType=CHAR},
+      </if>
+      <if test="isactive != null">
+        isActive = #{isactive,jdbcType=CHAR},
+      </if>
+      <if test="itemType != null">
+        item_type = #{itemType,jdbcType=CHAR},
+      </if>
+      <if test="deleteFlg != null">
+        delete_flg = #{deleteFlg,jdbcType=CHAR},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createrId != null">
+        creater_id = #{createrId,jdbcType=CHAR},
+      </if>
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updaterId != null">
+        updater_id = #{updaterId,jdbcType=CHAR},
+      </if>
+      <if test="deleteDate != null">
+        delete_date = #{deleteDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleterId != null">
+        deleter_id = #{deleterId,jdbcType=CHAR},
+      </if>
+      <if test="chargeItemId != null">
+        charge_item_id = #{chargeItemId,jdbcType=CHAR},
+      </if>
+      <if test="deptId != null">
+        dept_id = #{deptId,jdbcType=CHAR},
+      </if>
+      <if test="lineChart != null">
+        line_chart = #{lineChart,jdbcType=CHAR},
+      </if>
+    </set>
+    where objectId = #{objectId,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.hjw.model.ExaminationItem">
+    update bus_examination_item
+    set item_num = #{itemNum,jdbcType=CHAR},
+      item_name = #{itemName,jdbcType=VARCHAR},
+      item_eng_name = #{itemEngName,jdbcType=VARCHAR},
+      item_unitunit = #{itemUnitunit,jdbcType=CHAR},
+      item_pinyin = #{itemPinyin,jdbcType=VARCHAR},
+      exam_codecode = #{examCodecode,jdbcType=CHAR},
+      view_codecode = #{viewCodecode,jdbcType=CHAR},
+      item_category = #{itemCategory,jdbcType=CHAR},
+      is_print = #{isPrint,jdbcType=CHAR},
+      seq_code = #{seqCode,jdbcType=CHAR},
+      item_description = #{itemDescription,jdbcType=VARCHAR},
+      default_value = #{defaultValue,jdbcType=CHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      ref_img = #{refImg,jdbcType=VARCHAR},
+      is_detail = #{isDetail,jdbcType=CHAR},
+      is_compare = #{isCompare,jdbcType=CHAR},
+      ref_Mmax = #{refMmax,jdbcType=CHAR},
+      ref_Mmin = #{refMmin,jdbcType=CHAR},
+      ref_Fmin = #{refFmin,jdbcType=CHAR},
+      ref_Fmax = #{refFmax,jdbcType=CHAR},
+      dang_Fmax = #{dangFmax,jdbcType=CHAR},
+      dang_Fmin = #{dangFmin,jdbcType=CHAR},
+      dang_Mmax = #{dangMmax,jdbcType=CHAR},
+      dang_Mmin = #{dangMmin,jdbcType=CHAR},
+      isActive = #{isactive,jdbcType=CHAR},
+      item_type = #{itemType,jdbcType=CHAR},
+      delete_flg = #{deleteFlg,jdbcType=CHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      creater_id = #{createrId,jdbcType=CHAR},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      updater_id = #{updaterId,jdbcType=CHAR},
+      delete_date = #{deleteDate,jdbcType=TIMESTAMP},
+      deleter_id = #{deleterId,jdbcType=CHAR},
+      charge_item_id = #{chargeItemId,jdbcType=CHAR},
+      dept_id = #{deptId,jdbcType=CHAR},
+      line_chart = #{lineChart,jdbcType=CHAR}
+    where objectId = #{objectId,jdbcType=CHAR}
+  </update>
+</mapper>

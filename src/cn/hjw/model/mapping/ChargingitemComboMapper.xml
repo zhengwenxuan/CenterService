@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hjw.dao.ifc.ChargingitemComboMapper">
+  <resultMap id="BaseResultMap" type="cn.hjw.model.ChargingitemCombo">
+    <id column="objectId" jdbcType="CHAR" property="objectid" />
+    <result column="charging_item_id" jdbcType="CHAR" property="chargingItemId" />
+    <result column="combo_id" jdbcType="CHAR" property="comboId" />
+    <result column="discount" jdbcType="DECIMAL" property="discount" />
+    <result column="amount" jdbcType="DECIMAL" property="amount" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    objectId, charging_item_id, combo_id, discount, amount
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from bus_chargingitem_combo
+    where objectId = #{objectid,jdbcType=CHAR}
+  </select>
+
+    
+    
+     <select id="selectChargeItemByCombo" parameterType="java.lang.String" resultType="cn.hjw.model.ChargingitemCombo">
+    select 
+    cc.charging_item_id as chargingItemId,cc.discount,cc.amount,ci.item_code as chargingItemCode,
+    ci.item_name as chargingItemName,ci.amount as chargingItemAmount,d.dept_name as deptName
+    from bus_chargingitem_combo cc left join bus_charge_items ci on cc.charging_item_id=ci.objectId
+     left join bus_department d on ci.dept_id = d.objectId
+    where cc.combo_id=#{comboId}     
+    
+  </select>
+  
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from bus_chargingitem_combo
+    where objectId = #{objectid,jdbcType=CHAR}
+  </delete>
+    <delete id="deleteByComboId" parameterType="java.lang.String">
+     
+    delete from bus_chargingitem_combo
+    where combo_id = #{comboId,jdbcType=CHAR}
+    
+   
+  </delete>
+  <delete id="deleteByComboItems" parameterType="java.util.List">
+  
+    delete from bus_chargingitem_combo where combo_id in 
+    <foreach collection="list" item = "itemId" open="(" separator="," close=")">
+    #{itemId}
+    </foreach>
+  </delete>
+  <insert id="insert" parameterType="cn.hjw.model.ChargingitemCombo">
+    insert into bus_chargingitem_combo (objectId, charging_item_id, combo_id, 
+      discount, amount)
+    values (#{objectid,jdbcType=CHAR}, #{chargingItemId,jdbcType=CHAR}, #{comboId,jdbcType=CHAR}, 
+      #{discount,jdbcType=DECIMAL}, #{amount,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.hjw.model.ChargingitemCombo">
+    insert into bus_chargingitem_combo
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="objectid != null">
+        objectId,
+      </if>
+      <if test="chargingItemId != null">
+        charging_item_id,
+      </if>
+      <if test="comboId != null">
+        combo_id,
+      </if>
+      <if test="discount != null">
+        discount,
+      </if>
+      <if test="amount != null">
+        amount,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="objectid != null">
+        #{objectid,jdbcType=CHAR},
+      </if>
+      <if test="chargingItemId != null">
+        #{chargingItemId,jdbcType=CHAR},
+      </if>
+      <if test="comboId != null">
+        #{comboId,jdbcType=CHAR},
+      </if>
+      <if test="discount != null">
+        #{discount,jdbcType=DECIMAL},
+      </if>
+      <if test="amount != null">
+        #{amount,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.hjw.model.ChargingitemCombo">
+    update bus_chargingitem_combo
+    <set>
+      <if test="chargingItemId != null">
+        charging_item_id = #{chargingItemId,jdbcType=CHAR},
+      </if>
+      <if test="comboId != null">
+        combo_id = #{comboId,jdbcType=CHAR},
+      </if>
+      <if test="discount != null">
+        discount = #{discount,jdbcType=DECIMAL},
+      </if>
+      <if test="amount != null">
+        amount = #{amount,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where objectId = #{objectid,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.hjw.model.ChargingitemCombo">
+    update bus_chargingitem_combo
+    set charging_item_id = #{chargingItemId,jdbcType=CHAR},
+      combo_id = #{comboId,jdbcType=CHAR},
+      discount = #{discount,jdbcType=DECIMAL},
+      amount = #{amount,jdbcType=DECIMAL}
+    where objectId = #{objectid,jdbcType=CHAR}
+  </update>
+</mapper>

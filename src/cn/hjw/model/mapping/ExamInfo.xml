@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="center">
+	<sql id="selectExamColumns">
+		objectId,
+		create_date as createDate,
+		exam_num as examNum,
+		arch_num as archNum,
+		user_name as userName,
+		company,
+		id_num as idNum,
+		sex,
+		sg,
+		age,
+		address,
+		phone,
+		join_date as joinDate
+	</sql>
+	<select id="selectExamInfo" resultType="ExamInfo" parameterType="hashmap">
+		select
+		<include refid="selectExamColumns" />
+		from bus_exam_info where exam_num =#{examNum}
+		<if test="centerCode!=null and centerCode!=''">
+			and exam_center_id=#{centerCode}
+		</if>
+	</select>
+<delete id="deleteReportByExamNum" parameterType="hashmap">
+		delete from bus_dept_summary
+		where exam_num in
+		<foreach collection="examNums" item="tag" open="(" separator=","
+			close=")">
+			'${tag}'
+		</foreach>
+		<if test="centerCode!=null and centerCode!=''">
+			and exam_center_id=#{centerCode}
+		</if>;
+		delete from bus_exam_info
+		where exam_num in
+		<foreach collection="examNums" item="tag" open="(" separator=","
+			close=")">
+			'${tag}'
+		</foreach>
+		<if test="centerCode!=null and centerCode!=''">
+			and exam_center_id=#{centerCode}
+		</if>;
+		delete from bus_exam_pacs_summary_option
+		where exam_num in
+		<foreach collection="examNums" item="tag" open="(" separator=","
+			close=")">
+			'${tag}'
+		</foreach>
+		<if test="centerCode!=null and centerCode!=''">
+			and exam_center_id=#{centerCode}
+		</if>;
+		delete from bus_exam_result
+		where exam_num in
+		<foreach collection="examNums" item="tag" open="(" separator=","
+			close=")">
+			'${tag}'
+		</foreach>
+		<if test="centerCode!=null and centerCode!=''">
+			and exam_center_id=#{centerCode}
+		</if>;
+		delete from bus_exam_summary_option
+		where exam_num in
+		<foreach collection="examNums" item="tag" open="(" separator=","
+			close=")">
+			'${tag}'
+		</foreach>
+		<if test="centerCode!=null and centerCode!=''">
+			and exam_center_id=#{centerCode}
+		</if>;
+		delete from bus_lis_result
+		where exam_num in
+		<foreach collection="examNums" item="tag" open="(" separator=","
+			close=")">
+			'${tag}'
+		</foreach>
+		<if test="centerCode!=null and centerCode!=''">
+			and exam_center_id=#{centerCode}
+		</if>;
+		delete from bus_pacs_result
+		where exam_num in
+		<foreach collection="examNums" item="tag" open="(" separator=","
+			close=")">
+			'${tag}'
+		</foreach>
+		<if test="centerCode!=null and centerCode!=''">
+			and exam_center_id=#{centerCode}
+		</if>;
+	</delete>
+
+
+	<!-- 查询用户 -->
+	<select id="selectExamInfoByMap" resultType="hashmap"
+		parameterType="hashmap">
+
+	<!--	<choose>
+			  <when test="content != null and centent != ''"> -->
+			 
+				SELECT DISTINCT
+					i.objectId,
+					i.arch_num AS archNum,
+					i.exam_num AS examNum,
+					i.user_name AS userName,
+					i.sex,
+					i.age,
+					i.id_num AS identityCard,
+					i.phone AS userTel,
+					i.marriage_state AS marriageState,
+					i.company,
+					i.batch_name AS batch_name,
+					i.group_name AS group_name,
+					i.create_date
+				FROM
+					bus_exam_info i
+				LEFT JOIN bus_exam_summary_option o ON (i.exam_center_id = o.exam_center_id AND i.exam_num = o.exam_num)
+				WHERE
+					1 = 1
+				<if test="name !=null and name !=''">
+					and i.user_name LIKE '%${name}%'
+				</if>
+				<if test="beginAge !=null and beginAge !=''">
+					and i.age &gt;= #{beginAge}
+				</if>
+				<if test="endAge !=null and endAge !=''">
+					and i.age &lt;= #{endAge}
+				</if>
+				<if test="sex !=null and sex !=''">
+					and i.sex =#{sex}
+				</if>
+				<if test="marriageState !=null and marriageState !=''">
+					and i.marriage_state =#{marriageState}
+				</if>
+				<if test="identityCard !=null and identityCard !=''">
+					and i.id_num =#{identityCard}
+				</if>
+				<if test="userTel !=null and userTel !=''">
+					and i.phone =#{userTel}
+				</if>
+				<if test="archNum !=null and archNum !=''">
+					and i.arch_num =#{archNum}
+				</if>
+				<if test="examNum !=null and examNum !=''">
+					and i.exam_num =#{examNum}
+				</if>
+				<if test="company !=null and company != ''">
+					and i.company LIKE '%${company}%'
+				</if>
+				<if test="batch !=null and batch !=''">
+					and i.batch_name LIKE '%${batch}%'
+				</if>
+				<if test="group !=null and group !=''">
+					and i.group_name LIKE '%${group}%'
+				</if>
+				<if test="joinDateFrom != null and joinDateFrom !=''">
+					and i.join_date &gt;= #{joinDateFrom} 
+				</if>
+				<if test="joinDateTo !=null and joinDateTo !=''">
+					and i.join_date &lt;= #{joinDateTo} 
+				</if>
+				and i.exam_center_id =#{examCenterId}
+				
+				<if test="diseaseName != null and diseaseName.size()>0">
+					and o.code ='JBFX'
+					and (1=1 
+					<foreach collection="diseaseName" item="tag" separator=" "
+						close=")">
+							<if test="tag !=null and tag != ''">
+						or o.content Like '%${tag}%'</if>
+					</foreach>
+				</if>
+				<if test="showDetail == '1'.toString()">
+					GROUP BY i.arch_num
+				</if>
+				ORDER BY i.arch_num, i.exam_num
+		<!--		 
+			</when>
+			<otherwise>
+				select DISTINCT
+				<choose>
+				  提醒模板查询用户  
+				<when test="type == '1'">
+					user_name as name,sex as
+					gender,id_num
+					as idCard,i.age,i.phone as tel,i.create_date
+				</when>
+				<otherwise>
+					 objectId,user_name as name,sex as
+				gender,age,id_num
+				as idCard,phone as tel,'' as marry,create_date
+				</otherwise>
+				</choose>
+				from bus_exam_info
+				where 1=1
+				<if test="name !=null and name !=''">
+					and user_name LIKE '%${name}%'
+				</if>
+				<if test="minAge !=null and minAge !=''">
+					and age &gt;= #{minAge}
+				</if>
+				<if test="maxAge !=null and maxAge !=''">
+					and age &lt;= #{maxAge}
+				</if>
+				<if test="gender !=null and gender !=''">
+					and sex =#{gender}
+				</if>
+				<if test="company !=null and company != ''">
+					and company LIKE '%${company}%'
+				</if>
+				<if test="examCenterId !=null and examCenterId != ''">
+					and exam_center_id = #{examCenterId}
+				</if>
+			</otherwise>
+		</choose>
+		-->
+	</select>
+
+
+</mapper>

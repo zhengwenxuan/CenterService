@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hjw.dao.ifc.ChargeItemsMapper">
+  <resultMap id="BaseResultMap" type="cn.hjw.model.ChargeItems">
+    <id column="objectId" jdbcType="CHAR" property="objectid" />
+    <result column="item_code" jdbcType="CHAR" property="itemCode" />
+    <result column="item_pinyin" jdbcType="CHAR" property="itemPinyin" />
+    <result column="item_name" jdbcType="VARCHAR" property="itemName" />
+    <result column="item_category" jdbcType="CHAR" property="itemCategory" />
+    <result column="dept_id" jdbcType="CHAR" property="deptId" />
+    <result column="dep_category" jdbcType="CHAR" property="depCategory" />
+    <result column="sam_demo_id" jdbcType="CHAR" property="samDemoId" />
+    <result column="sam_report_demo_id" jdbcType="CHAR" property="samReportDemoId" />
+    <result column="sex" jdbcType="CHAR" property="sex" />
+    <result column="amount" jdbcType="DECIMAL" property="amount" />
+    <result column="isOnlyApplyOrReport" jdbcType="CHAR" property="isonlyapplyorreport" />
+    <result column="item_seq" jdbcType="CHAR" property="itemSeq" />
+    <result column="guide_category" jdbcType="CHAR" property="guideCategory" />
+    <result column="his_code" jdbcType="CHAR" property="hisCode" />
+    <result column="exam_code" jdbcType="CHAR" property="examCode" />
+    <result column="view_code" jdbcType="CHAR" property="viewCode" />
+    <result column="isActive" jdbcType="CHAR" property="isactive" />
+    <result column="calculation_amount" jdbcType="DECIMAL" property="calculationAmount" />
+    <result column="interface_flag" jdbcType="CHAR" property="interfaceFlag" />
+    <result column="item_type" jdbcType="CHAR" property="itemType" />
+    <result column="delete_flg" jdbcType="CHAR" property="deleteFlg" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="creater_id" jdbcType="CHAR" property="createrId" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="updater_id" jdbcType="CHAR" property="updaterId" />
+    <result column="delete_date" jdbcType="TIMESTAMP" property="deleteDate" />
+    <result column="deleter_id" jdbcType="CHAR" property="deleterId" />
+     <result column="dept_name" jdbcType="CHAR" property="deptName" />
+     
+     <result column="is_cancel" jdbcType="CHAR" property="iscancel" />
+     <result column="exam_summary" jdbcType="VARCHAR" property="examSummary" />
+     <result column="similar_code" jdbcType="CHAR" property="similarCode" />
+     <result column="exam_advice" jdbcType="VARCHAR" property="examAdvice" />
+     <result column="base_item" jdbcType="VARCHAR" property="baseItem" />
+     <result column="taboo_crowd" jdbcType="VARCHAR" property="tabooCrowd" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    c.objectId, c.item_code, c.item_pinyin, c.item_name, c.item_category, c.dept_id, c.dep_category, 
+    c.is_cancel,c.exam_summary,c.similar_code,c.exam_advice,c.base_item,c.taboo_crowd,
+    c.sam_demo_id, c.sam_report_demo_id, c.sex, c.amount, c.isOnlyApplyOrReport, c.item_seq, c.guide_category, 
+    c.his_code, c.exam_code, c.view_code, c.isActive, c.calculation_amount, c.interface_flag, c.item_type, 
+    c.delete_flg, c.create_date, c.creater_id, c.update_date, c.updater_id, c.delete_date, c.deleter_id,d.dept_name
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from bus_charge_items c left join bus_department d on c.dept_id = d.objectId 
+    where c.objectId = #{objectid,jdbcType=CHAR}
+  </select>
+  <select id="selectChargeItemByCombo" parameterType="hashmap" resultMap="BaseResultMap">
+  
+   select 
+    <include refid="Base_Column_List" />
+    from bus_charge_items c left join bus_department d on c.dept_id = d.objectId 
+    where c.objectId in(select charging_item_id from bus_chargingitem_combo where combo_id=#{comboId})
+    
+     <if test="itemCategory!=null and itemCategory!=''">
+    and c.item_category=#{itemCategory,jdbcType=CHAR}  
+    </if>
+  
+  
+  
+    
+  </select>
+  	<select id="selectByCondition" parameterType="cn.hjw.model.ChargeItems" resultMap="BaseResultMap">
+		select
+		 <include refid="Base_Column_List" />
+		from bus_charge_items c left join bus_department d on c.dept_id = d.objectId where 1=1
+		<if test="itemCode!=null and itemCode!=''">
+		and c.item_code like '%${itemCode}%'				
+			</if>
+			<if test="itemName!=null and itemName!=''">
+		and c.item_name like '%${itemName}%'				
+			</if>
+			
+	</select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from bus_charge_items
+    where objectId = #{objectid,jdbcType=CHAR}
+  </delete>
+    <delete id="deleteByCollection" parameterType="java.util.List">
+    delete from bus_charge_items
+    where objectId in 
+    <foreach collection="list" item = "chargingItemId" open="(" separator="," close=")">
+    #{chargingItemId}
+    </foreach>
+  </delete>
+  <insert id="insert" parameterType="cn.hjw.model.ChargeItems">
+    insert into bus_charge_items (objectId, item_code, item_pinyin, 
+      item_name, item_category, dept_id, 
+      dep_category, sam_demo_id, sam_report_demo_id, 
+      sex, amount, isOnlyApplyOrReport, 
+      item_seq, guide_category, his_code, 
+      exam_code, view_code, isActive, 
+      calculation_amount, interface_flag, item_type, 
+      delete_flg, create_date, creater_id, 
+      update_date, updater_id, delete_date, 
+      deleter_id)
+    values (#{objectid,jdbcType=CHAR}, #{itemCode,jdbcType=CHAR}, #{itemPinyin,jdbcType=CHAR}, 
+      #{itemName,jdbcType=VARCHAR}, #{itemCategory,jdbcType=CHAR}, #{deptId,jdbcType=CHAR}, 
+      #{depCategory,jdbcType=CHAR}, #{samDemoId,jdbcType=CHAR}, #{samReportDemoId,jdbcType=CHAR}, 
+      #{sex,jdbcType=CHAR}, #{amount,jdbcType=DECIMAL}, #{isonlyapplyorreport,jdbcType=CHAR}, 
+      #{itemSeq,jdbcType=CHAR}, #{guideCategory,jdbcType=CHAR}, #{hisCode,jdbcType=CHAR}, 
+      #{examCode,jdbcType=CHAR}, #{viewCode,jdbcType=CHAR}, #{isactive,jdbcType=CHAR}, 
+      #{calculationAmount,jdbcType=DECIMAL}, #{interfaceFlag,jdbcType=CHAR}, #{itemType,jdbcType=CHAR}, 
+      #{deleteFlg,jdbcType=CHAR}, #{createDate,jdbcType=TIMESTAMP}, #{createrId,jdbcType=CHAR}, 
+      #{updateDate,jdbcType=TIMESTAMP}, #{updaterId,jdbcType=CHAR}, #{deleteDate,jdbcType=TIMESTAMP}, 
+      #{deleterId,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.hjw.model.ChargeItems">
+    insert into bus_charge_items
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="objectid != null">
+        objectId,
+      </if>
+      <if test="itemCode != null">
+        item_code,
+      </if>
+      <if test="itemPinyin != null">
+        item_pinyin,
+      </if>
+      <if test="itemName != null">
+        item_name,
+      </if>
+      <if test="itemCategory != null">
+        item_category,
+      </if>
+      <if test="deptId != null">
+        dept_id,
+      </if>
+      <if test="depCategory != null">
+        dep_category,
+      </if>
+      <if test="samDemoId != null">
+        sam_demo_id,
+      </if>
+      <if test="samReportDemoId != null">
+        sam_report_demo_id,
+      </if>
+      <if test="sex != null">
+        sex,
+      </if>
+      <if test="amount != null">
+        amount,
+      </if>
+      <if test="isonlyapplyorreport != null">
+        isOnlyApplyOrReport,
+      </if>
+      <if test="itemSeq != null">
+        item_seq,
+      </if>
+      <if test="guideCategory != null">
+        guide_category,
+      </if>
+      <if test="hisCode != null">
+        his_code,
+      </if>
+      <if test="examCode != null">
+        exam_code,
+      </if>
+      <if test="viewCode != null">
+        view_code,
+      </if>
+      <if test="isactive != null">
+        isActive,
+      </if>
+      <if test="calculationAmount != null">
+        calculation_amount,
+      </if>
+      <if test="interfaceFlag != null">
+        interface_flag,
+      </if>
+      <if test="itemType != null">
+        item_type,
+      </if>
+      <if test="deleteFlg != null">
+        delete_flg,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="createrId != null">
+        creater_id,
+      </if>
+      <if test="updateDate != null">
+        update_date,
+      </if>
+      <if test="updaterId != null">
+        updater_id,
+      </if>
+      <if test="deleteDate != null">
+        delete_date,
+      </if>
+      <if test="deleterId != null">
+        deleter_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="objectid != null">
+        #{objectid,jdbcType=CHAR},
+      </if>
+      <if test="itemCode != null">
+        #{itemCode,jdbcType=CHAR},
+      </if>
+      <if test="itemPinyin != null">
+        #{itemPinyin,jdbcType=CHAR},
+      </if>
+      <if test="itemName != null">
+        #{itemName,jdbcType=VARCHAR},
+      </if>
+      <if test="itemCategory != null">
+        #{itemCategory,jdbcType=CHAR},
+      </if>
+      <if test="deptId != null">
+        #{deptId,jdbcType=CHAR},
+      </if>
+      <if test="depCategory != null">
+        #{depCategory,jdbcType=CHAR},
+      </if>
+      <if test="samDemoId != null">
+        #{samDemoId,jdbcType=CHAR},
+      </if>
+      <if test="samReportDemoId != null">
+        #{samReportDemoId,jdbcType=CHAR},
+      </if>
+      <if test="sex != null">
+        #{sex,jdbcType=CHAR},
+      </if>
+      <if test="amount != null">
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="isonlyapplyorreport != null">
+        #{isonlyapplyorreport,jdbcType=CHAR},
+      </if>
+      <if test="itemSeq != null">
+        #{itemSeq,jdbcType=CHAR},
+      </if>
+      <if test="guideCategory != null">
+        #{guideCategory,jdbcType=CHAR},
+      </if>
+      <if test="hisCode != null">
+        #{hisCode,jdbcType=CHAR},
+      </if>
+      <if test="examCode != null">
+        #{examCode,jdbcType=CHAR},
+      </if>
+      <if test="viewCode != null">
+        #{viewCode,jdbcType=CHAR},
+      </if>
+      <if test="isactive != null">
+        #{isactive,jdbcType=CHAR},
+      </if>
+      <if test="calculationAmount != null">
+        #{calculationAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="interfaceFlag != null">
+        #{interfaceFlag,jdbcType=CHAR},
+      </if>
+      <if test="itemType != null">
+        #{itemType,jdbcType=CHAR},
+      </if>
+      <if test="deleteFlg != null">
+        #{deleteFlg,jdbcType=CHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createrId != null">
+        #{createrId,jdbcType=CHAR},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updaterId != null">
+        #{updaterId,jdbcType=CHAR},
+      </if>
+      <if test="deleteDate != null">
+        #{deleteDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleterId != null">
+        #{deleterId,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.hjw.model.ChargeItems">
+    update bus_charge_items
+    <set>
+      <if test="itemCode != null">
+        item_code = #{itemCode,jdbcType=CHAR},
+      </if>
+      <if test="itemPinyin != null">
+        item_pinyin = #{itemPinyin,jdbcType=CHAR},
+      </if>
+      <if test="itemName != null">
+        item_name = #{itemName,jdbcType=VARCHAR},
+      </if>
+      <if test="itemCategory != null">
+        item_category = #{itemCategory,jdbcType=CHAR},
+      </if>
+      <if test="deptId != null">
+        dept_id = #{deptId,jdbcType=CHAR},
+      </if>
+      <if test="depCategory != null">
+        dep_category = #{depCategory,jdbcType=CHAR},
+      </if>
+      <if test="samDemoId != null">
+        sam_demo_id = #{samDemoId,jdbcType=CHAR},
+      </if>
+      <if test="samReportDemoId != null">
+        sam_report_demo_id = #{samReportDemoId,jdbcType=CHAR},
+      </if>
+      <if test="sex != null">
+        sex = #{sex,jdbcType=CHAR},
+      </if>
+      <if test="amount != null">
+        amount = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="isonlyapplyorreport != null">
+        isOnlyApplyOrReport = #{isonlyapplyorreport,jdbcType=CHAR},
+      </if>
+      <if test="itemSeq != null">
+        item_seq = #{itemSeq,jdbcType=CHAR},
+      </if>
+      <if test="guideCategory != null">
+        guide_category = #{guideCategory,jdbcType=CHAR},
+      </if>
+      <if test="hisCode != null">
+        his_code = #{hisCode,jdbcType=CHAR},
+      </if>
+      <if test="examCode != null">
+        exam_code = #{examCode,jdbcType=CHAR},
+      </if>
+      <if test="viewCode != null">
+        view_code = #{viewCode,jdbcType=CHAR},
+      </if>
+      <if test="isactive != null">
+        isActive = #{isactive,jdbcType=CHAR},
+      </if>
+      <if test="calculationAmount != null">
+        calculation_amount = #{calculationAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="interfaceFlag != null">
+        interface_flag = #{interfaceFlag,jdbcType=CHAR},
+      </if>
+      <if test="itemType != null">
+        item_type = #{itemType,jdbcType=CHAR},
+      </if>
+      <if test="deleteFlg != null">
+        delete_flg = #{deleteFlg,jdbcType=CHAR},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createrId != null">
+        creater_id = #{createrId,jdbcType=CHAR},
+      </if>
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updaterId != null">
+        updater_id = #{updaterId,jdbcType=CHAR},
+      </if>
+      <if test="deleteDate != null">
+        delete_date = #{deleteDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleterId != null">
+        deleter_id = #{deleterId,jdbcType=CHAR},
+      </if>
+    </set>
+    where objectId = #{objectid,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.hjw.model.ChargeItems">
+    update bus_charge_items
+    set item_code = #{itemCode,jdbcType=CHAR},
+      item_pinyin = #{itemPinyin,jdbcType=CHAR},
+      item_name = #{itemName,jdbcType=VARCHAR},
+      item_category = #{itemCategory,jdbcType=CHAR},
+      dept_id = #{deptId,jdbcType=CHAR},
+      dep_category = #{depCategory,jdbcType=CHAR},
+      sam_demo_id = #{samDemoId,jdbcType=CHAR},
+      sam_report_demo_id = #{samReportDemoId,jdbcType=CHAR},
+      sex = #{sex,jdbcType=CHAR},
+      amount = #{amount,jdbcType=DECIMAL},
+      isOnlyApplyOrReport = #{isonlyapplyorreport,jdbcType=CHAR},
+      item_seq = #{itemSeq,jdbcType=CHAR},
+      guide_category = #{guideCategory,jdbcType=CHAR},
+      his_code = #{hisCode,jdbcType=CHAR},
+      exam_code = #{examCode,jdbcType=CHAR},
+      view_code = #{viewCode,jdbcType=CHAR},
+      isActive = #{isactive,jdbcType=CHAR},
+      calculation_amount = #{calculationAmount,jdbcType=DECIMAL},
+      interface_flag = #{interfaceFlag,jdbcType=CHAR},
+      item_type = #{itemType,jdbcType=CHAR},
+      delete_flg = #{deleteFlg,jdbcType=CHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      creater_id = #{createrId,jdbcType=CHAR},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      updater_id = #{updaterId,jdbcType=CHAR},
+      delete_date = #{deleteDate,jdbcType=TIMESTAMP},
+      deleter_id = #{deleterId,jdbcType=CHAR}
+    where objectId = #{objectid,jdbcType=CHAR}
+  </update>
+</mapper>

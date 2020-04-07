@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hjw.dao.ifc.DataDictionaryMapper">
+  <resultMap id="BaseResultMap" type="cn.hjw.model.DataDictionary">
+    <id column="objectId" jdbcType="CHAR" property="objectid" />
+    <result column="data_type" jdbcType="CHAR" property="dataType" />
+    <result column="data_code" jdbcType="CHAR" property="dataCode" />
+    <result column="data_name" jdbcType="CHAR" property="dataName" />
+    <result column="isActive" jdbcType="CHAR" property="isactive" />
+    <result column="remark" jdbcType="CHAR" property="remark" />
+    <result column="creater" jdbcType="CHAR" property="creater" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="updater" jdbcType="CHAR" property="updater" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="seq_code" jdbcType="CHAR" property="seqCode" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    objectId, data_type, data_code, data_name, isActive, remark, creater, create_time, 
+    updater, update_time, seq_code
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from bus_data_dictionary
+    where objectId = #{objectid,jdbcType=CHAR}
+  </select>
+  
+    <select id="selectByCondition" parameterType="cn.hjw.model.DataDictionary" resultMap="BaseResultMap">
+		select
+		 <include refid="Base_Column_List" />
+		from bus_data_dictionary where 1=1
+		<if test="dataCode!=null and dataCode!=''">
+		and data_code=#{dataCode}				
+			</if>
+			
+			
+	</select>
+	
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from bus_data_dictionary
+    where objectId = #{objectid,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.hjw.model.DataDictionary">
+    insert into bus_data_dictionary (objectId, data_type, data_code, 
+      data_name, isActive, remark, 
+      creater, create_time, updater, 
+      update_time, seq_code)
+    values (#{objectid,jdbcType=CHAR}, #{dataType,jdbcType=CHAR}, #{dataCode,jdbcType=CHAR}, 
+      #{dataName,jdbcType=CHAR}, #{isactive,jdbcType=CHAR}, #{remark,jdbcType=CHAR}, 
+      #{creater,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updater,jdbcType=CHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{seqCode,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.hjw.model.DataDictionary">
+    insert into bus_data_dictionary
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="objectid != null">
+        objectId,
+      </if>
+      <if test="dataType != null">
+        data_type,
+      </if>
+      <if test="dataCode != null">
+        data_code,
+      </if>
+      <if test="dataName != null">
+        data_name,
+      </if>
+      <if test="isactive != null">
+        isActive,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="creater != null">
+        creater,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updater != null">
+        updater,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="seqCode != null">
+        seq_code,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="objectid != null">
+        #{objectid,jdbcType=CHAR},
+      </if>
+      <if test="dataType != null">
+        #{dataType,jdbcType=CHAR},
+      </if>
+      <if test="dataCode != null">
+        #{dataCode,jdbcType=CHAR},
+      </if>
+      <if test="dataName != null">
+        #{dataName,jdbcType=CHAR},
+      </if>
+      <if test="isactive != null">
+        #{isactive,jdbcType=CHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=CHAR},
+      </if>
+      <if test="creater != null">
+        #{creater,jdbcType=CHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updater != null">
+        #{updater,jdbcType=CHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="seqCode != null">
+        #{seqCode,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.hjw.model.DataDictionary">
+    update bus_data_dictionary
+    <set>
+      <if test="dataType != null">
+        data_type = #{dataType,jdbcType=CHAR},
+      </if>
+      <if test="dataCode != null">
+        data_code = #{dataCode,jdbcType=CHAR},
+      </if>
+      <if test="dataName != null">
+        data_name = #{dataName,jdbcType=CHAR},
+      </if>
+      <if test="isactive != null">
+        isActive = #{isactive,jdbcType=CHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=CHAR},
+      </if>
+      <if test="creater != null">
+        creater = #{creater,jdbcType=CHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updater != null">
+        updater = #{updater,jdbcType=CHAR},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="seqCode != null">
+        seq_code = #{seqCode,jdbcType=CHAR},
+      </if>
+    </set>
+    where objectId = #{objectid,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.hjw.model.DataDictionary">
+    update bus_data_dictionary
+    set data_type = #{dataType,jdbcType=CHAR},
+      data_code = #{dataCode,jdbcType=CHAR},
+      data_name = #{dataName,jdbcType=CHAR},
+      isActive = #{isactive,jdbcType=CHAR},
+      remark = #{remark,jdbcType=CHAR},
+      creater = #{creater,jdbcType=CHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      updater = #{updater,jdbcType=CHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      seq_code = #{seqCode,jdbcType=CHAR}
+    where objectId = #{objectid,jdbcType=CHAR}
+  </update>
+</mapper>

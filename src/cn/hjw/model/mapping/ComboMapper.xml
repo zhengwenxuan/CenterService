@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hjw.dao.ifc.ComboMapper">
+  <resultMap id="BaseResultMap" type="cn.hjw.model.Combo">
+    <id column="objectId" jdbcType="CHAR" property="objectid" />
+    <result column="code" jdbcType="CHAR" property="code" />
+    <result column="set_pinyin" jdbcType="VARCHAR" property="setPinyin" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="company" jdbcType="CHAR" property="company" />
+    <result column="sex" jdbcType="CHAR" property="sex" />
+    <result column="discount" jdbcType="DECIMAL" property="discount" />
+    <result column="amount" jdbcType="DECIMAL" property="amount" />
+    <result column="amounted" jdbcType="DECIMAL" property="amounted" />    
+    <result column="isActive" jdbcType="CHAR" property="isactive" />
+    <result column="delete_flg" jdbcType="CHAR" property="deleteFlg" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="creater_id" jdbcType="CHAR" property="createrId" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="updater_id" jdbcType="CHAR" property="updaterId" />
+    <result column="delete_date" jdbcType="TIMESTAMP" property="deleteDate" />
+    <result column="deleter_id" jdbcType="CHAR" property="deleterId" />
+    
+     <result column="is_group" jdbcType="CHAR" property="isgroup" />
+      <result column="is_survey" jdbcType="CHAR" property="issurvey" />
+       <result column="combo_type" jdbcType="CHAR" property="comboType" />
+        <result column="combo_img" jdbcType="VARCHAR" property="comboImg" />
+        <result column="combo_comment" jdbcType="VARCHAR" property="comboComment" />
+        
+        <result column="appoint_note" jdbcType="VARCHAR" property="appointNote" />
+        <result column="exam_note" jdbcType="VARCHAR" property="examNote" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    objectId, code, set_pinyin, name, company, sex, discount, amount,amounted, isActive, delete_flg, 
+    create_date, creater_id, update_date, updater_id, delete_date, deleter_id,
+    is_group,is_survey,combo_type,combo_img,combo_comment,appoint_note,exam_note
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from bus_combo
+    where objectId = #{objectid,jdbcType=CHAR}
+  </select>
+    	<select id="selectByCondition" parameterType="Condition" resultMap="BaseResultMap">
+		select
+		 <include refid="Base_Column_List" />
+		from bus_combo where 1=1
+		<if test="name!=null and name!=''">			
+		and name like '%${name}%'			
+			</if>
+			<if test="dateFrom!=null and dateFrom!=''">
+		<![CDATA[ and create_date>=#{dateFrom}  ]]>				
+			</if>
+			<if test="dateTo!=null and dateTo!=''">
+		<![CDATA[ and create_date<= #{dateTo}  ]]>			
+			</if>
+			
+			<if test="dateTwoFrom!=null and dateTwoFrom!=''">
+		<![CDATA[ and update_date>=#{dateTwoFrom}  ]]>				
+			</if>
+			<if test="dateTwoTo!=null and dateTwoTo!=''">
+		<![CDATA[ and update_date<= #{dateTwoTo}  ]]>			
+			</if>
+			
+		
+	</select>
+	<select id="selectByCondition2" parameterType="hashmap" resultMap="BaseResultMap">
+		select
+		 <include refid="Base_Column_List" />
+		from bus_combo where 1=1
+			<if test="sex!=null and sex!=''">			
+		and sex = #{sex,jdbcType=CHAR}			
+			</if>
+			<if test="amountedF!=null and amountedF!=''">			
+			
+		<![CDATA[ and amounted>=#{amountedF,jdbcType=DECIMAL}  ]]>			
+			</if>
+			<if test="amountedT!=null and amountedT!=''">			
+			
+		<![CDATA[ and amounted<=#{amountedT,jdbcType=DECIMAL}  ]]>			
+			</if>
+			
+			
+			
+			<if test="comboType!=null and comboType!=''">			
+		and combo_type = #{comboType,jdbcType=CHAR}			
+			</if>
+	</select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from bus_combo
+    where objectId = #{objectid,jdbcType=CHAR}
+  </delete>
+    <delete id="deleteByCollection" parameterType="java.util.List">
+    delete from bus_combo
+    where objectId in 
+    <foreach collection="list" item = "itemId" open="(" separator="," close=")">
+    #{itemId}
+    </foreach>
+  </delete>
+  <insert id="insert" parameterType="cn.hjw.model.Combo">
+    insert into bus_combo (objectId, code, set_pinyin, 
+      name, company, sex, discount, 
+      amount, amounted,isActive, delete_flg, 
+      create_date, creater_id, update_date, 
+      updater_id, delete_date, deleter_id
+      )
+    values (#{objectid,jdbcType=CHAR}, #{code,jdbcType=CHAR}, #{setPinyin,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{company,jdbcType=CHAR}, #{sex,jdbcType=CHAR}, #{discount,jdbcType=DECIMAL}, 
+      #{amount,jdbcType=DECIMAL},#{amounted,jdbcType=DECIMAL}, #{isactive,jdbcType=CHAR}, #{deleteFlg,jdbcType=CHAR}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{createrId,jdbcType=CHAR}, #{updateDate,jdbcType=TIMESTAMP}, 
+      #{updaterId,jdbcType=CHAR}, #{deleteDate,jdbcType=TIMESTAMP}, #{deleterId,jdbcType=CHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.hjw.model.Combo">
+    insert into bus_combo
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="objectid != null">
+        objectId,
+      </if>
+      <if test="code != null">
+        code,
+      </if>
+      <if test="setPinyin != null">
+        set_pinyin,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="company != null">
+        company,
+      </if>
+      <if test="sex != null">
+        sex,
+      </if>
+      <if test="discount != null">
+        discount,
+      </if>
+      <if test="amount != null">
+        amount,
+      </if>
+       <if test="amounted != null">
+        amounted,
+      </if>
+      <if test="isactive != null">
+        isActive,
+      </if>
+      <if test="deleteFlg != null">
+        delete_flg,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="createrId != null">
+        creater_id,
+      </if>
+      <if test="updateDate != null">
+        update_date,
+      </if>
+      <if test="updaterId != null">
+        updater_id,
+      </if>
+      <if test="deleteDate != null">
+        delete_date,
+      </if>
+      <if test="deleterId != null">
+        deleter_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="objectid != null">
+        #{objectid,jdbcType=CHAR},
+      </if>
+      <if test="code != null">
+        #{code,jdbcType=CHAR},
+      </if>
+      <if test="setPinyin != null">
+        #{setPinyin,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="company != null">
+        #{company,jdbcType=CHAR},
+      </if>
+      <if test="sex != null">
+        #{sex,jdbcType=CHAR},
+      </if>
+      <if test="discount != null">
+        #{discount,jdbcType=DECIMAL},
+      </if>
+      <if test="amount != null">
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="amounted != null">
+        #{amounted,jdbcType=DECIMAL},
+      </if>
+      <if test="isactive != null">
+        #{isactive,jdbcType=CHAR},
+      </if>
+      <if test="deleteFlg != null">
+        #{deleteFlg,jdbcType=CHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createrId != null">
+        #{createrId,jdbcType=CHAR},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updaterId != null">
+        #{updaterId,jdbcType=CHAR},
+      </if>
+      <if test="deleteDate != null">
+        #{deleteDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleterId != null">
+        #{deleterId,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.hjw.model.Combo">
+    update bus_combo
+    <set>
+      <if test="code != null">
+        code = #{code,jdbcType=CHAR},
+      </if>
+      <if test="setPinyin != null">
+        set_pinyin = #{setPinyin,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="company != null">
+        company = #{company,jdbcType=CHAR},
+      </if>
+      <if test="sex != null">
+        sex = #{sex,jdbcType=CHAR},
+      </if>
+      <if test="discount != null">
+        discount = #{discount,jdbcType=DECIMAL},
+      </if>
+      <if test="amount != null">
+        amount = #{amount,jdbcType=DECIMAL},
+      </if>
+       <if test="amounted != null">
+        amounted = #{amounted,jdbcType=DECIMAL},
+      </if>
+      <if test="isactive != null">
+        isActive = #{isactive,jdbcType=CHAR},
+      </if>
+      <if test="deleteFlg != null">
+        delete_flg = #{deleteFlg,jdbcType=CHAR},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createrId != null">
+        creater_id = #{createrId,jdbcType=CHAR},
+      </if>
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updaterId != null">
+        updater_id = #{updaterId,jdbcType=CHAR},
+      </if>
+      <if test="deleteDate != null">
+        delete_date = #{deleteDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleterId != null">
+        deleter_id = #{deleterId,jdbcType=CHAR},
+      </if>
+    </set>
+    where objectId = #{objectid,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.hjw.model.Combo">
+    update bus_combo
+    set code = #{code,jdbcType=CHAR},
+      set_pinyin = #{setPinyin,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      company = #{company,jdbcType=CHAR},
+      sex = #{sex,jdbcType=CHAR},
+      discount = #{discount,jdbcType=DECIMAL},
+      amount = #{amount,jdbcType=DECIMAL},
+      amounted = #{amounted,jdbcType=DECIMAL},
+      isActive = #{isactive,jdbcType=CHAR},
+      delete_flg = #{deleteFlg,jdbcType=CHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      creater_id = #{createrId,jdbcType=CHAR},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      updater_id = #{updaterId,jdbcType=CHAR},
+      delete_date = #{deleteDate,jdbcType=TIMESTAMP},
+      deleter_id = #{deleterId,jdbcType=CHAR}
+    where objectId = #{objectid,jdbcType=CHAR}
+  </update>
+</mapper>

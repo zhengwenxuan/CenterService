@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hjw.dao.ifc.ChargingItemExamItemMapper">
+  <resultMap id="BaseResultMap" type="cn.hjw.model.ChargingItemExamItem">
+    <id column="objectId" jdbcType="CHAR" property="objectid" />
+    <result column="charging_item_id" jdbcType="CHAR" property="chargingItemId" />
+    <result column="examination_item_id" jdbcType="CHAR" property="examinationItemId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    objectId, charging_item_id, examination_item_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from bus_charging_item_exam_item
+    where objectId = #{objectid,jdbcType=CHAR}
+  </select>
+    <select id="selectExamItemByCharge" parameterType="java.lang.String" resultType="ExaminationItem">
+    select 
+    cie.examination_item_id as objectId,ei.item_num as itemNum,ei.item_name as itemName
+    from bus_charging_item_exam_item cie left join bus_examination_item ei on cie.examination_item_id=ei.objectId
+    where cie.charging_item_id=#{chargingItemId}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from bus_charging_item_exam_item
+    where objectId = #{objectid,jdbcType=CHAR}
+  </delete>
+    <delete id="deleteByChargeItem" parameterType="java.lang.String">
+     
+    delete from bus_charging_item_exam_item
+    where charging_item_id = #{chargingItemId,jdbcType=CHAR}
+    
+   
+  </delete>
+  
+  <delete id="deleteByChargeItems" parameterType="java.util.List">
+  
+    delete from bus_charging_item_exam_item where charging_item_id in 
+    <foreach collection="list" item = "chargingItemId" open="(" separator="," close=")">
+    #{chargingItemId}
+    </foreach>
+  </delete>
+    <delete id="deleteByExaminationItem" parameterType="java.util.List">
+  
+    delete from bus_charging_item_exam_item where examination_item_id in 
+    <foreach collection="list" item = "itemId" open="(" separator="," close=")">
+    #{itemId}
+    </foreach>
+  </delete>
+  
+  
+  <insert id="insert" parameterType="cn.hjw.model.ChargingItemExamItem">
+    insert into bus_charging_item_exam_item (objectId, charging_item_id, examination_item_id
+      )
+    values (#{objectid,jdbcType=CHAR}, #{chargingItemId,jdbcType=CHAR}, #{examinationItemId,jdbcType=CHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.hjw.model.ChargingItemExamItem">
+    insert into bus_charging_item_exam_item
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="objectid != null">
+        objectId,
+      </if>
+      <if test="chargingItemId != null">
+        charging_item_id,
+      </if>
+      <if test="examinationItemId != null">
+        examination_item_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="objectid != null">
+        #{objectid,jdbcType=CHAR},
+      </if>
+      <if test="chargingItemId != null">
+        #{chargingItemId,jdbcType=CHAR},
+      </if>
+      <if test="examinationItemId != null">
+        #{examinationItemId,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.hjw.model.ChargingItemExamItem">
+    update bus_charging_item_exam_item
+    <set>
+      <if test="chargingItemId != null">
+        charging_item_id = #{chargingItemId,jdbcType=CHAR},
+      </if>
+      <if test="examinationItemId != null">
+        examination_item_id = #{examinationItemId,jdbcType=CHAR},
+      </if>
+    </set>
+    where objectId = #{objectid,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.hjw.model.ChargingItemExamItem">
+    update bus_charging_item_exam_item
+    set charging_item_id = #{chargingItemId,jdbcType=CHAR},
+      examination_item_id = #{examinationItemId,jdbcType=CHAR}
+    where objectId = #{objectid,jdbcType=CHAR}
+  </update>
+</mapper>

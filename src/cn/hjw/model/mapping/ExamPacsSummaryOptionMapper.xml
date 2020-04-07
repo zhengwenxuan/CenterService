@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hjw.dao.ifc.ExamPacsSummaryOptionMapper">
+  <resultMap id="BaseResultMap" type="cn.hjw.model.ExamPacsSummaryOption">
+    <id column="objectId" jdbcType="CHAR" property="objectid" />
+    <result column="summary_id" jdbcType="INTEGER" property="summaryId" />
+    <result column="exam_num" jdbcType="CHAR" property="examNum" />
+    <result column="charging_id" jdbcType="CHAR" property="chargingId" />
+    <result column="dept_code" jdbcType="CHAR" property="deptCode" />
+    <result column="name" jdbcType="CHAR" property="name" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="show_order" jdbcType="INTEGER" property="showOrder" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="cn.hjw.model.ExamPacsSummaryOption">
+    <result column="content" jdbcType="LONGVARCHAR" property="content" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    objectId, summary_id, exam_num, charging_id, dept_code, name, create_date, show_order
+  </sql>
+  <sql id="Blob_Column_List">
+    content
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from bus_exam_pacs_summary_option
+    where objectId = #{objectid,jdbcType=CHAR}
+  </select>
+  <select id="selectByCondition" parameterType="cn.hjw.model.ExamPacsSummaryOption" resultMap="ResultMapWithBLOBs">
+		select
+		 <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+		from bus_exam_pacs_summary_option where (content is not null) and content!=''
+		<if test="examNum!=null and examNum!=''">			
+		and exam_num = #{examNum}			
+			</if>
+			
+			<if test="chargingId!=null and chargingId!=''">			
+		and charging_id = #{chargingId}			
+			</if>
+			
+			<if test="deptCode!=null and deptCode!=''">			
+		and dept_code = #{deptCode}			
+			</if>
+			 <if test="centerCode!=null and centerCode!=''">
+    and exam_center_id=#{centerCode,jdbcType=CHAR}  
+    </if>
+		 order by show_order asc
+	</select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from bus_exam_pacs_summary_option
+    where objectId = #{objectid,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.hjw.model.ExamPacsSummaryOption">
+    insert into bus_exam_pacs_summary_option (objectId, summary_id, exam_num, 
+      charging_id, dept_code, name, 
+      create_date, show_order, content
+      )
+    values (#{objectid,jdbcType=CHAR}, #{summaryId,jdbcType=INTEGER}, #{examNum,jdbcType=CHAR}, 
+      #{chargingId,jdbcType=CHAR}, #{deptCode,jdbcType=CHAR}, #{name,jdbcType=CHAR}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{showOrder,jdbcType=INTEGER}, #{content,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.hjw.model.ExamPacsSummaryOption">
+    insert into bus_exam_pacs_summary_option
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="objectid != null">
+        objectId,
+      </if>
+      <if test="summaryId != null">
+        summary_id,
+      </if>
+      <if test="examNum != null">
+        exam_num,
+      </if>
+      <if test="chargingId != null">
+        charging_id,
+      </if>
+      <if test="deptCode != null">
+        dept_code,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="showOrder != null">
+        show_order,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="objectid != null">
+        #{objectid,jdbcType=CHAR},
+      </if>
+      <if test="summaryId != null">
+        #{summaryId,jdbcType=INTEGER},
+      </if>
+      <if test="examNum != null">
+        #{examNum,jdbcType=CHAR},
+      </if>
+      <if test="chargingId != null">
+        #{chargingId,jdbcType=CHAR},
+      </if>
+      <if test="deptCode != null">
+        #{deptCode,jdbcType=CHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=CHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="showOrder != null">
+        #{showOrder,jdbcType=INTEGER},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.hjw.model.ExamPacsSummaryOption">
+    update bus_exam_pacs_summary_option
+    <set>
+      <if test="summaryId != null">
+        summary_id = #{summaryId,jdbcType=INTEGER},
+      </if>
+      <if test="examNum != null">
+        exam_num = #{examNum,jdbcType=CHAR},
+      </if>
+      <if test="chargingId != null">
+        charging_id = #{chargingId,jdbcType=CHAR},
+      </if>
+      <if test="deptCode != null">
+        dept_code = #{deptCode,jdbcType=CHAR},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=CHAR},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="showOrder != null">
+        show_order = #{showOrder,jdbcType=INTEGER},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where objectId = #{objectid,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="cn.hjw.model.ExamPacsSummaryOption">
+    update bus_exam_pacs_summary_option
+    set summary_id = #{summaryId,jdbcType=INTEGER},
+      exam_num = #{examNum,jdbcType=CHAR},
+      charging_id = #{chargingId,jdbcType=CHAR},
+      dept_code = #{deptCode,jdbcType=CHAR},
+      name = #{name,jdbcType=CHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      show_order = #{showOrder,jdbcType=INTEGER},
+      content = #{content,jdbcType=LONGVARCHAR}
+    where objectId = #{objectid,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.hjw.model.ExamPacsSummaryOption">
+    update bus_exam_pacs_summary_option
+    set summary_id = #{summaryId,jdbcType=INTEGER},
+      exam_num = #{examNum,jdbcType=CHAR},
+      charging_id = #{chargingId,jdbcType=CHAR},
+      dept_code = #{deptCode,jdbcType=CHAR},
+      name = #{name,jdbcType=CHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      show_order = #{showOrder,jdbcType=INTEGER}
+    where objectId = #{objectid,jdbcType=CHAR}
+  </update>
+</mapper>

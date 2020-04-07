@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="7492240d-b02e-4346-8ad0-5ad9a1e939ac" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ProjectId" id="1ZvE00iBdpwNaxAWj2vRJk7V1GQ" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/.." />
+    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+  </component>
+  <component name="RebelAgentSelection">
+    <selection>jr</selection>
+  </component>
+  <component name="SvnConfiguration" cleanupOnStartRun="true">
+    <configuration>C:\Users\vv\AppData\Roaming\Subversion</configuration>
+    <supportedVersion>125</supportedVersion>
+  </component>
+  <component name="SvnFileUrlMappingImpl">
+    <option name="myMappingRoots">
+      <list>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="H:\IdeaProjects\CenterService" />
+          <option name="myCopyRoot" value="H:\IdeaProjects\CenterService" />
+        </SvnCopyRootSimple>
+      </list>
+    </option>
+    <option name="myMoreRealMappingRoots">
+      <list>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="H:\IdeaProjects\CenterService" />
+          <option name="myCopyRoot" value="H:\IdeaProjects\CenterService" />
+        </SvnCopyRootSimple>
+      </list>
+    </option>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="7492240d-b02e-4346-8ad0-5ad9a1e939ac" name="Default Changelist" comment="" />
+      <created>1585710940436</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1585710940436</updated>
+      <workItem from="1585710951951" duration="36000" />
+      <workItem from="1585723402940" duration="357000" />
+      <workItem from="1585798191260" duration="47000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="463" y="107" key="FileChooserDialogImpl" timestamp="1585723661269">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="463" y="107" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1585723661269" />
+    <state x="186" y="0" key="SettingsEditor" timestamp="1585710987800">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="186" y="0" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1585710987800" />
+    <state x="488" y="270" key="svn.upgradeDialog" timestamp="1585723672691">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="488" y="270" key="svn.upgradeDialog/0.0.1366.728@0.0.1366.728" timestamp="1585723672691" />
+    <state x="366" y="237" key="svn4idea.checkout.options" timestamp="1585723670238">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="366" y="237" key="svn4idea.checkout.options/0.0.1366.728@0.0.1366.728" timestamp="1585723670238" />
+  </component>
+</project>

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hjw.dao.ifc.ExamItemRefanddangMapper">
+  <resultMap id="BaseResultMap" type="cn.hjw.model.ExamItemRefanddang">
+    <id column="objectId" jdbcType="CHAR" property="objectid" />
+    <result column="exam_item_id" jdbcType="CHAR" property="examItemId" />
+    <result column="is_ReforDang" jdbcType="VARCHAR" property="isRefordang" />
+    <result column="val_info" jdbcType="VARCHAR" property="valInfo" />
+    <result column="val_index" jdbcType="CHAR" property="valIndex" />
+    <result column="creater_id" jdbcType="CHAR" property="createrId" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="updater_id" jdbcType="VARCHAR" property="updaterId" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    objectId, exam_item_id, is_ReforDang, val_info, val_index, creater_id, create_date, 
+    updater_id, update_date
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from bus_exam_item_refanddang
+    where objectId = #{objectid,jdbcType=CHAR}
+  </select>
+  
+   <select id="selectByCondition" parameterType="cn.hjw.model.ExamItemRefanddang" resultMap="BaseResultMap">
+		select
+		 <include refid="Base_Column_List" />
+		from bus_exam_item_refanddang where 1=1
+		<if test="examItemId!=null and examItemId!=''">
+		and exam_item_id=#{examItemId}				
+			</if>
+			<if test="isRefordang!=null and isRefordang!=''">
+		and is_ReforDang =#{isRefordang}				
+			</if>
+			
+	</select>
+	
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from bus_exam_item_refanddang
+    where objectId = #{objectid,jdbcType=CHAR}
+  </delete>
+  <delete id="deleteByExamItemId" parameterType="java.lang.String">
+    delete from bus_exam_item_refanddang
+    where exam_item_id = #{objectid,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.hjw.model.ExamItemRefanddang">
+    insert into bus_exam_item_refanddang (objectId, exam_item_id, is_ReforDang, 
+      val_info, val_index, creater_id, 
+      create_date, updater_id, update_date
+      )
+    values (#{objectid,jdbcType=CHAR}, #{examItemId,jdbcType=CHAR}, #{isRefordang,jdbcType=VARCHAR}, 
+      #{valInfo,jdbcType=VARCHAR}, #{valIndex,jdbcType=CHAR}, #{createrId,jdbcType=CHAR}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{updaterId,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.hjw.model.ExamItemRefanddang">
+    insert into bus_exam_item_refanddang
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="objectid != null">
+        objectId,
+      </if>
+      <if test="examItemId != null">
+        exam_item_id,
+      </if>
+      <if test="isRefordang != null">
+        is_ReforDang,
+      </if>
+      <if test="valInfo != null">
+        val_info,
+      </if>
+      <if test="valIndex != null">
+        val_index,
+      </if>
+      <if test="createrId != null">
+        creater_id,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="updaterId != null">
+        updater_id,
+      </if>
+      <if test="updateDate != null">
+        update_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="objectid != null">
+        #{objectid,jdbcType=CHAR},
+      </if>
+      <if test="examItemId != null">
+        #{examItemId,jdbcType=CHAR},
+      </if>
+      <if test="isRefordang != null">
+        #{isRefordang,jdbcType=VARCHAR},
+      </if>
+      <if test="valInfo != null">
+        #{valInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="valIndex != null">
+        #{valIndex,jdbcType=CHAR},
+      </if>
+      <if test="createrId != null">
+        #{createrId,jdbcType=CHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updaterId != null">
+        #{updaterId,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.hjw.model.ExamItemRefanddang">
+    update bus_exam_item_refanddang
+    <set>
+      <if test="examItemId != null">
+        exam_item_id = #{examItemId,jdbcType=CHAR},
+      </if>
+      <if test="isRefordang != null">
+        is_ReforDang = #{isRefordang,jdbcType=VARCHAR},
+      </if>
+      <if test="valInfo != null">
+        val_info = #{valInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="valIndex != null">
+        val_index = #{valIndex,jdbcType=CHAR},
+      </if>
+      <if test="createrId != null">
+        creater_id = #{createrId,jdbcType=CHAR},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updaterId != null">
+        updater_id = #{updaterId,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where objectId = #{objectid,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.hjw.model.ExamItemRefanddang">
+    update bus_exam_item_refanddang
+    set exam_item_id = #{examItemId,jdbcType=CHAR},
+      is_ReforDang = #{isRefordang,jdbcType=VARCHAR},
+      val_info = #{valInfo,jdbcType=VARCHAR},
+      val_index = #{valIndex,jdbcType=CHAR},
+      creater_id = #{createrId,jdbcType=CHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      updater_id = #{updaterId,jdbcType=VARCHAR},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
+    where objectId = #{objectid,jdbcType=CHAR}
+  </update>
+</mapper>

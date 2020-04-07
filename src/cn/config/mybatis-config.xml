@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<properties resource="cn/config/jdbc.properties" />
+	<typeAliases>
+		<typeAlias type="cn.hjw.bean.Condition" alias="Condition" />
+		<typeAlias type="cn.hjw.model.ExamResult" alias="ExamResult" />
+		<typeAlias type="cn.hjw.model.ExamInfo" alias="ExamInfo" />
+		<typeAlias type="cn.hjw.model.ExaminationItem" alias="ExaminationItem" />
+		<typeAlias type="cn.hjw.model.ItemCategory" alias="ItemCategory" />
+	</typeAliases>
+	<plugins>
+		<plugin
+			interceptor="com.github.miemiedev.mybatis.paginator.OffsetLimitInterceptor">
+			<property name="dialectClass"
+				value="com.github.miemiedev.mybatis.paginator.dialect.MySQLDialect" />
+		</plugin>
+	</plugins>
+	<environments default="development">
+		<environment id="development">
+			<transactionManager type="JDBC" />
+			<dataSource type="POOLED">
+				<property name="driver" value="${driver}" />
+				<property name="url" value="${url}" />
+				<property name="username" value="${username}" />
+				<property name="password" value="${password}" />
+				<property name="poolMaximumActiveConnections" value="100" />
+				<property name="poolMaximumIdleConnections" value="90" />
+				<property name="poolPingQuery" value="SELECT 1" />
+				<property name="poolPingEnabled" value="true" />
+				<property name="poolPingConnectionsNotUsedFor" value="0" />
+				<!-- 默认连接事务隔离级别 <property name="defaultTransactionIsolationLevel" value="" 
+					/> -->
+
+			</dataSource>
+		</environment>
+	</environments>
+
+	<mappers>
+		<mapper resource="cn/hjw/model/mapping/ExamInfo_1.xml" />
+		<mapper resource="cn/hjw/model/mapping/ExamInfo.xml" />
+		<mapper resource="cn/hjw/model/mapping/ExamInfo_2.xml" />
+		<mapper resource="cn/hjw/model/mapping/ExaminationItem.xml" />
+		<mapper resource="cn/hjw/model/mapping/DepartmentTypeMapper.xml" />
+		<mapper resource="cn/hjw/model/mapping/DepartmentMapper.xml" />
+		<mapper resource="cn/hjw/model/mapping/ChargeItemsMapper.xml" />
+		<mapper resource="cn/hjw/model/mapping/ExaminationItemMapper.xml" />
+		<mapper resource="cn/hjw/model/mapping/ChargingItemExamItemMapper.xml" />
+		<mapper resource="cn/hjw/model/mapping/ChargingitemComboMapper.xml" />
+		<mapper resource="cn/hjw/model/mapping/ComboMapper.xml" />
+
+		<mapper resource="cn/hjw/model/mapping/ExamItemRefanddangMapper.xml" />
+		<mapper resource="cn/hjw/model/mapping/DataDictionaryMapper.xml" />
+		<mapper resource="cn/hjw/model/mapping/ExamSummaryOptionMapper.xml" />
+
+		<mapper resource="cn/hjw/model/mapping/ExamPacsSummaryOptionMapper.xml" />
+
+
+		<mapper resource="cn/hjw/model/mapping/ItemCategoryContentMapper.xml" />
+		<mapper resource="cn/hjw/model/mapping/ItemCategoryMapper.xml" />
+	</mappers>
+</configuration>

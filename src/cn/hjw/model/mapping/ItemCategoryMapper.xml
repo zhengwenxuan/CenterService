@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hjw.dao.ifc.ItemCategoryMapper">
+  <resultMap id="BaseResultMap" type="cn.hjw.model.ItemCategory_2">
+    <id column="objectId" jdbcType="CHAR" property="objectid" />
+    <result column="item_id" jdbcType="CHAR" property="itemId" />
+    <result column="anomaly_type" jdbcType="CHAR" property="anomalyType" />
+    <result column="anomaly_type_name" jdbcType="CHAR" property="anomalyTypeName" />
+    <result column="category_id" jdbcType="CHAR" property="categoryId" />
+    <result column="categoryIcon" jdbcType="VARCHAR" property="categoryicon" />
+    <result column="categoryName" jdbcType="VARCHAR" property="categoryname" />
+    
+    <result column="item_num" jdbcType="VARCHAR" property="itemNum" />
+    <result column="item_name" jdbcType="VARCHAR" property="itemName" />
+	
+  </resultMap>
+  
+   <resultMap id="BaseResultMap_2" type="cn.hjw.model.ItemCategory">
+    <id column="objectId" jdbcType="CHAR" property="objectId" />
+    <result column="item_id" jdbcType="CHAR" property="itemId" />
+    <result column="anomaly_type" jdbcType="CHAR" property="anomalyType" />
+    <result column="anomaly_type_name" jdbcType="CHAR" property="anomalyTypeName" />
+    <result column="category_id" jdbcType="CHAR" property="categoryId" />
+    <result column="categoryIcon" jdbcType="VARCHAR" property="categoryIcon" />
+    <result column="categoryName" jdbcType="VARCHAR" property="categoryName" />    
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="content" jdbcType="VARCHAR" property="content" />	
+    
+     <result column="item_num" jdbcType="VARCHAR" property="itemNum" />
+    <result column="item_name" jdbcType="VARCHAR" property="itemName" />	
+  </resultMap>
+  <sql id="Base_Column_List">
+    bus_item_category.objectId, bus_item_category.item_id, bus_item_category.anomaly_type, bus_item_category.anomaly_type_name, bus_item_category.category_id, bus_item_category.categoryIcon, bus_item_category.categoryName
+  </sql>
+  
+    <select id="checkAnomalyType" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from bus_item_category
+    where  
+			
+                bus_item_category.anomaly_type = #{anomalyType,jdbcType=CHAR}
+				and bus_item_category.category_id = #{categoryId,jdbcType=CHAR}
+				and bus_item_category.item_id = #{itemId,jdbcType=CHAR}
+   
+  </select>
+  
+  <select id="selectByPrimaryKey" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />,bus_examination_item.item_num,bus_examination_item.item_name
+    from bus_item_category left join bus_examination_item on bus_item_category.item_id=bus_examination_item.objectId
+    where 1=1  
+    
+    <choose>
+			<when test="objectid!=null and objectid!=''">
+				 and bus_item_category.objectId = #{objectid,jdbcType=CHAR}
+			</when>			
+			<otherwise>
+				and bus_item_category.anomaly_type = #{anomalyType,jdbcType=CHAR}
+				and bus_item_category.category_id = #{categoryId,jdbcType=CHAR}
+				and bus_item_category.item_id = #{itemId,jdbcType=CHAR}
+			</otherwise>
+		</choose>
+		
+		
+   
+  </select>
+  	<select id="selectByCondition2" parameterType="cn.hjw.model.ItemCategory" resultMap="BaseResultMap_2">
+		select
+		 <include refid="Base_Column_List" />,bus_item_category_content.title,bus_item_category_content.content,bus_examination_item.item_num,bus_examination_item.item_name
+		from bus_item_category_content  left join bus_item_category on bus_item_category.objectId=bus_item_category_content.category_id 
+		left join bus_examination_item on bus_item_category.item_id=bus_examination_item.objectId
+		where 1=1
+		<if test="anomalyType!=null and anomalyType!=''">
+		and bus_item_category.anomaly_type=#{anomalyType}				
+			</if>
+			
+			<if test="itemNum!=null and itemNum!=''">
+		and bus_examination_item.item_num=#{itemNum}				
+			</if>
+			
+			<if test="categoryId!=null and categoryId!=''">
+		and bus_item_category.category_id=#{categoryId}				
+			</if>
+			
+	</select>
+	<select id="selectByCondition" parameterType="cn.hjw.model.ItemCategory" resultMap="BaseResultMap_2">
+		select
+		 <include refid="Base_Column_List" />,bus_examination_item.item_num,bus_examination_item.item_name
+		from bus_item_category left join bus_examination_item on bus_item_category.item_id=bus_examination_item.objectId
+		where 1=1
+		<if test="anomalyType!=null and anomalyType!=''">
+		and bus_item_category.anomaly_type=#{anomalyType}				
+			</if>
+			
+			<if test="itemNum!=null and itemNum!=''">
+		and bus_examination_item.item_num=#{itemNum}				
+			</if>
+			
+			<if test="categoryId!=null and categoryId!=''">
+		and bus_item_category.category_id=#{categoryId}				
+			</if>
+			
+	</select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from bus_item_category
+    where objectId = #{objectid,jdbcType=CHAR}
+  </delete>
+    <delete id="deleteByCollection" parameterType="java.util.List">
+    delete from bus_item_category
+    where objectId in 
+    <foreach collection="list" item = "ItemId" open="(" separator="," close=")">
+    #{ItemId}
+    </foreach>
+  </delete>
+  <insert id="insert" parameterType="cn.hjw.model.ItemCategory_2">
+    insert into bus_item_category (objectId, item_id, anomaly_type, 
+      anomaly_type_name, category_id, categoryIcon, 
+      categoryName)
+    values (#{objectid,jdbcType=CHAR}, #{itemId,jdbcType=CHAR}, #{anomalyType,jdbcType=CHAR}, 
+      #{anomalyTypeName,jdbcType=CHAR}, #{categoryId,jdbcType=CHAR}, #{categoryicon,jdbcType=VARCHAR}, 
+      #{categoryname,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.hjw.model.ItemCategory_2">
+    insert into bus_item_category
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="objectid != null">
+        objectId,
+      </if>
+      <if test="itemId != null">
+        item_id,
+      </if>
+      <if test="anomalyType != null">
+        anomaly_type,
+      </if>
+      <if test="anomalyTypeName != null">
+        anomaly_type_name,
+      </if>
+      <if test="categoryId != null">
+        category_id,
+      </if>
+      <if test="categoryicon != null">
+        categoryIcon,
+      </if>
+      <if test="categoryname != null">
+        categoryName,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="objectid != null">
+        #{objectid,jdbcType=CHAR},
+      </if>
+      <if test="itemId != null">
+        #{itemId,jdbcType=CHAR},
+      </if>
+      <if test="anomalyType != null">
+        #{anomalyType,jdbcType=CHAR},
+      </if>
+      <if test="anomalyTypeName != null">
+        #{anomalyTypeName,jdbcType=CHAR},
+      </if>
+      <if test="categoryId != null">
+        #{categoryId,jdbcType=CHAR},
+      </if>
+      <if test="categoryicon != null">
+        #{categoryicon,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryname != null">
+        #{categoryname,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.hjw.model.ItemCategory_2">
+    update bus_item_category
+    <set>
+      <if test="itemId != null">
+        item_id = #{itemId,jdbcType=CHAR},
+      </if>
+      <if test="anomalyType != null">
+        anomaly_type = #{anomalyType,jdbcType=CHAR},
+      </if>
+      <if test="anomalyTypeName != null">
+        anomaly_type_name = #{anomalyTypeName,jdbcType=CHAR},
+      </if>
+      <if test="categoryId != null">
+        category_id = #{categoryId,jdbcType=CHAR},
+      </if>
+      <if test="categoryicon != null">
+        categoryIcon = #{categoryicon,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryname != null">
+        categoryName = #{categoryname,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where objectId = #{objectid,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.hjw.model.ItemCategory_2">
+    update bus_item_category
+    set item_id = #{itemId,jdbcType=CHAR},
+      anomaly_type = #{anomalyType,jdbcType=CHAR},
+      anomaly_type_name = #{anomalyTypeName,jdbcType=CHAR},
+      category_id = #{categoryId,jdbcType=CHAR},
+      categoryIcon = #{categoryicon,jdbcType=VARCHAR},
+      categoryName = #{categoryname,jdbcType=VARCHAR}
+    where objectId = #{objectid,jdbcType=CHAR}
+  </update>
+</mapper>

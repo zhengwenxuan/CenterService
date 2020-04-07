@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="center">
+	<sql id="selectColumns_1">
+		objectId,
+		create_date as createDate,
+		result_type as resultType,
+		exam_info_id as examInfoId,
+		charging_id as chargingId,
+		charge_item_name as chargeItemName,
+		exam_item_id as examItemId,
+		item_name as itemName,
+		exam_category as examCategory,
+		exam_item_category as examItemCategory,
+		exam_result as examResult,
+		flag,
+		ref_min as refMin,
+		ref_max as refMax,
+		item_unit as itemUnit,
+		ref_value as refValue,
+		dang_min as dangMin,
+		dang_max as dangMax,
+		exam_doctor as examDoctor,
+		exam_date as examDate,
+		approver,
+		exam_num as examNum,
+		creater_id as createrId
+	</sql>
+	<select id="selectLisResults" resultType="BusLisResult">
+		select
+		<include refid="selectColumns_1" />
+		from bus_lis_result where exam_num =#{examNum}
+	</select>
+	<!-- 获取体检编号的收费项目 -->
+	<select id="selectChargeItems1" resultType="BusLisResult">
+		select
+		distinct charging_id as chargingId,
+		charge_item_name as chargeItemName
+		from bus_lis_result where exam_num =#{examNum}
+	</select>
+	<!-- 获取体检编号收费项目的检查项目 -->
+	<select id="selectCheckItems1" resultType="BusLisResult">
+		select
+		exam_item_id as examItemId,
+		item_name as itemName,
+		exam_result as examResult,
+		exam_category as examCategory,
+		exam_item_category as examItemCategory,
+		item_unit as itemUnit,
+		ref_value as refValue,
+		flag,
+		'0' as isDetail		
+		from bus_lis_result 
+		where exam_num =#{examNum} and charging_id=#{chargingId}
+	</select>
+	
+</mapper>

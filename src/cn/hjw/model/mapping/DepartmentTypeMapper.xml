@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hjw.dao.DepartmentTypeMapper">
+  <resultMap id="BaseResultMap" type="cn.hjw.model.DepartmentType">
+    <id column="objectId" jdbcType="CHAR" property="objectid" />
+    <result column="type_code" jdbcType="VARCHAR" property="typeCode" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="delete_flg" jdbcType="CHAR" property="deleteFlg" />
+    <result column="creater_id" jdbcType="CHAR" property="createrId" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="updater_id" jdbcType="CHAR" property="updaterId" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="deleter_id" jdbcType="CHAR" property="deleterId" />
+    <result column="delete_date" jdbcType="TIMESTAMP" property="deleteDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    objectId, type_code, name, remark, delete_flg, creater_id, create_date, updater_id, 
+    update_date, deleter_id, delete_date
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from bus_department_type
+    where objectId = #{objectid,jdbcType=CHAR}
+  </select>
+  <select id="selectItems"  resultMap="BaseResultMap">
+   select 
+    <include refid="Base_Column_List" />
+    from bus_department_type
+    where  (delete_flg is  null) or delete_flg='0'
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from bus_department_type
+    where objectId = #{objectid,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.hjw.model.DepartmentType">
+    insert into bus_department_type (objectId, type_code, name, 
+      remark, delete_flg, creater_id, 
+      create_date, updater_id, update_date, 
+      deleter_id, delete_date)
+    values (#{objectid,jdbcType=CHAR}, #{typeCode,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR}, #{deleteFlg,jdbcType=CHAR}, #{createrId,jdbcType=CHAR}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{updaterId,jdbcType=CHAR}, #{updateDate,jdbcType=TIMESTAMP}, 
+      #{deleterId,jdbcType=CHAR}, #{deleteDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.hjw.model.DepartmentType">
+    insert into bus_department_type
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="objectid != null">
+        objectId,
+      </if>
+      <if test="typeCode != null">
+        type_code,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="deleteFlg != null">
+        delete_flg,
+      </if>
+      <if test="createrId != null">
+        creater_id,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="updaterId != null">
+        updater_id,
+      </if>
+      <if test="updateDate != null">
+        update_date,
+      </if>
+      <if test="deleterId != null">
+        deleter_id,
+      </if>
+      <if test="deleteDate != null">
+        delete_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="objectid != null">
+        #{objectid,jdbcType=CHAR},
+      </if>
+      <if test="typeCode != null">
+        #{typeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="deleteFlg != null">
+        #{deleteFlg,jdbcType=CHAR},
+      </if>
+      <if test="createrId != null">
+        #{createrId,jdbcType=CHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updaterId != null">
+        #{updaterId,jdbcType=CHAR},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleterId != null">
+        #{deleterId,jdbcType=CHAR},
+      </if>
+      <if test="deleteDate != null">
+        #{deleteDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.hjw.model.DepartmentType">
+    update bus_department_type
+    <set>
+      <if test="typeCode != null">
+        type_code = #{typeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="deleteFlg != null">
+        delete_flg = #{deleteFlg,jdbcType=CHAR},
+      </if>
+      <if test="createrId != null">
+        creater_id = #{createrId,jdbcType=CHAR},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updaterId != null">
+        updater_id = #{updaterId,jdbcType=CHAR},
+      </if>
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleterId != null">
+        deleter_id = #{deleterId,jdbcType=CHAR},
+      </if>
+      <if test="deleteDate != null">
+        delete_date = #{deleteDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where objectId = #{objectid,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.hjw.model.DepartmentType">
+    update bus_department_type
+    set type_code = #{typeCode,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      delete_flg = #{deleteFlg,jdbcType=CHAR},
+      creater_id = #{createrId,jdbcType=CHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      updater_id = #{updaterId,jdbcType=CHAR},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      deleter_id = #{deleterId,jdbcType=CHAR},
+      delete_date = #{deleteDate,jdbcType=TIMESTAMP}
+    where objectId = #{objectid,jdbcType=CHAR}
+  </update>
+</mapper>

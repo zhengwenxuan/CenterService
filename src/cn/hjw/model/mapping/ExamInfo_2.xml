@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="center">
+	
+	<!-- 获取体检编号的科室收费项目 -->
+	<select id="selectDeptChargeItems" parameterType="Condition" resultType="ExamResult">
+	select items.* from (
+		select distinct
+		charging_id as chargingId,
+		charge_item_name as chargeItemName,
+		exam_doctor as examDoctor,
+		'' as approver
+		<!--, charging_seq -->
+		from bus_exam_result where exam_num =#{examNum}	and dep_id=#{depId}
+		 <if test="centerCode!=null and centerCode!=''">
+           and exam_center_id=#{centerCode,jdbcType=CHAR}  
+         </if>
+		union
+		
+		select distinct
+		charging_id as chargingId,
+		charge_item_name as chargeItemName,
+		exam_doctor as examDoctor,
+		approver as approver
+		<!--, charging_seq -->
+		from bus_lis_result where exam_num =#{examNum}	and dep_id=#{depId}
+		 <if test="centerCode!=null and centerCode!=''">
+           and exam_center_id=#{centerCode,jdbcType=CHAR}  
+         </if>
+		union
+		select distinct
+		charging_id as chargingId,
+		charge_item_name as chargeItemName,
+		exam_doctor as examDoctor,
+		'' as approver
+		<!--, charging_seq -->
+		from bus_pacs_result where exam_num =#{examNum}	and dep_id=#{depId}
+		 <if test="centerCode!=null and centerCode!=''">
+           and exam_center_id=#{centerCode,jdbcType=CHAR}  
+         </if>
+		) items <!-- order by charging_seq asc -->
+	</select>
+	<!-- 获取科室收费项目的检查项目 -->
+	<select id="selectDeptCheckItems" parameterType="Condition" resultType="ExamResult">
+		
+		select items.* from (
+		select 
+		er.exam_item_id as examItemId,
+		er.item_name as itemName,
+		er.exam_result as examResult,
+		'' as examDesc,
+		'' as examCategory,
+		'' as examItemCategory,
+		er.item_unit as itemUnit,
+		er.ref_value as refValue,
+		er.flag,
+		'2' as examItemType,
+		'' as isDetail,
+		'' as lineChart,
+		'' as isCompare,
+		er.exam_item_seq	
+		from bus_exam_result er
+		where er.exam_num =#{examNum} and er.charging_id=#{chargingId} and er.dep_id=#{depId} and (er.exam_item_id is not null) and er.exam_item_id!=''
+		 <if test="centerCode!=null and centerCode!=''">
+           and er.exam_center_id=#{centerCode,jdbcType=CHAR}  
+         </if>
+		union
+		
+		select 
+		lr.exam_item_id as examItemId,
+		lr.item_name as itemName,
+		lr.exam_result as examResult,
+		'' as examDesc,
+		lr.exam_category as examCategory,
+		lr.exam_item_category as examItemCategory,
+		lr.item_unit as itemUnit,
+		lr.ref_value as refValue,
+		lr.flag,
+		'1' as examItemType,
+		'' as isDetail,
+		'' as lineChart,
+		'' as isCompare,
+		lr.exam_item_seq	
+		from bus_lis_result lr 
+		where lr.exam_num =#{examNum} and lr.charging_id=#{chargingId} and lr.dep_id=#{depId} and (lr.exam_item_id is not null) and lr.exam_item_id!=''
+		<if test="centerCode!=null and centerCode!=''">
+           and lr.exam_center_id=#{centerCode,jdbcType=CHAR}  
+         </if>
+		union
+		
+		select 
+		pr.exam_item_id as examItemId,
+		pr.d_item_name as itemName,
+		pr.exam_result as examResult,
+		pr.exam_desc as examDesc,
+		'' as examCategory,
+		'' as examItemCategory,
+		'' as itemUnit,
+		'' as refValue,
+		pr.flag,
+		'3' as examItemType,
+		'' as isDetail,
+		'' as lineChart,
+		'' as isCompare,
+		0 as exam_item_seq		
+		from bus_pacs_result pr 
+		where pr.exam_num =#{examNum} and pr.charging_id=#{chargingId} and pr.dep_id=#{depId} and (pr.exam_item_id is not null) and pr.exam_item_id!=''
+		<if test="centerCode!=null and centerCode!=''">
+           and pr.exam_center_id=#{centerCode,jdbcType=CHAR}  
+         </if>
+		) items   order by exam_item_seq asc
+		
+	</select>
+	<!-- 获取科室 -->
+	<select id="selectDeptInfo" parameterType="hashmap" resultType="ExamResult">
+	select items.* from(
+	select distinct er.dep_id as depId,er.dep_name as depName,d.content as suggest,er.dept_item_seq,'common' AS deptType from bus_exam_result er
+	left join bus_dept_summary d on er.dep_id=d.dept_code and er.exam_num=d.exam_num and er.exam_center_id=d.exam_center_id  
+	where er.exam_num =#{examNum}
+	 <if test="centerCode!=null and centerCode!=''">
+    and er.exam_center_id=#{centerCode,jdbcType=CHAR}  
+    </if>
+	union
+	select distinct lr.dep_id as depId,lr.dep_name as depName,d.content as suggest,lr.dept_item_seq,'lis' AS deptType from bus_lis_result lr
+	left join bus_dept_summary d on lr.dep_id=d.dept_code and lr.exam_num=d.exam_num and lr.exam_center_id=d.exam_center_id 
+	where lr.exam_num =#{examNum}
+	<if test="centerCode!=null and centerCode!=''">
+    and lr.exam_center_id=#{centerCode,jdbcType=CHAR}  
+    </if>
+	union
+	select distinct pr.dep_id as depId,pr.dep_name as depName,d.content as suggest,pr.dept_item_seq,'pacs' AS deptType from bus_pacs_result pr
+	left join bus_dept_summary d on pr.dep_id=d.dept_code and pr.exam_num=d.exam_num and pr.exam_center_id=d.exam_center_id 
+	where pr.exam_num =#{examNum}
+	<if test="centerCode!=null and centerCode!=''">
+    and pr.exam_center_id=#{centerCode,jdbcType=CHAR}  
+    </if>
+	) items  order by dept_item_seq asc
+	</select>
+</mapper>

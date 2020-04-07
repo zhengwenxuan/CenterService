@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="center">
+	
+	<!-- 获取体检编号的收费项目 -->
+	<select id="selectChargeItems" parameterType="hashmap" resultType="ExamResult">
+		select items.* from (
+		select distinct
+		charging_id as chargingId,
+		charge_item_name as chargeItemName,
+		charging_seq as chargingSeq,
+		dept_item_seq
+		from bus_lis_result where exam_num =#{examNum} and (charging_id is not null) and charging_id!=''
+		<if test="centerCode!=null and centerCode!=''">
+    and exam_center_id=#{centerCode,jdbcType=CHAR}  
+    </if>
+		union
+		
+		select distinct
+		charging_id as chargingId,
+		charge_item_name as chargeItemName,
+		charging_seq as chargingSeq,
+		dept_item_seq
+		from bus_exam_result where exam_num =#{examNum} and (charging_id is not null) and charging_id!=''
+		<if test="centerCode!=null and centerCode!=''">
+    and exam_center_id=#{centerCode,jdbcType=CHAR}  
+    </if>
+		union
+		
+		select distinct
+		charging_id as chargingId,
+		charge_item_name as chargeItemName,
+		charging_seq as chargingSeq,
+		dept_item_seq
+		
+		from bus_pacs_result where exam_num =#{examNum} and (charging_id is not null) and charging_id!=''
+		<if test="centerCode!=null and centerCode!=''">
+    and exam_center_id=#{centerCode,jdbcType=CHAR}  
+    </if>
+		
+		) items  order by dept_item_seq asc,chargingSeq asc
+	</select>
+	<!-- 获取体检编号收费项目的检查项目 -->
+	<select id="selectCheckItems" parameterType="Condition" resultType="ExamResult">
+	select items.* from (
+		select 
+		lr.exam_item_id as examItemId,
+		lr.item_name as itemName,
+		lr.exam_result as examResult,
+		lr.exam_category as examCategory,
+		lr.exam_item_category as examItemCategory,
+		lr.item_unit as itemUnit,
+		lr.ref_value as refValue,
+		lr.flag,
+		'1' as examItemType,
+		'' as isDetail,
+		'' as isCompare,
+		'' as lineChart,
+		lr.exam_item_seq		
+		from bus_lis_result lr 
+		where lr.exam_num =#{examNum} and lr.charging_id=#{chargingId} and (lr.exam_item_id is not null) and lr.exam_item_id!='' and 
+		
+		
+		<choose>
+			<when test="flag=='1'.toString()">
+				(lr.flag is not null) and lr.flag!='Z' and lr.flag!='W' and lr.flag!=''
+			</when>			
+			<otherwise>
+				1 = 1
+			</otherwise>
+		</choose>
+		<if test="centerCode!=null and centerCode!=''">
+          and lr.exam_center_id=#{centerCode,jdbcType=CHAR}  
+        </if>
+		
+		union
+		
+		select 
+		er.exam_item_id as examItemId,
+		er.item_name as itemName,
+		er.exam_result as examResult,
+		'' as examCategory,
+		'' as examItemCategory,
+		er.item_unit as itemUnit,
+		er.ref_value as refValue,
+		er.flag,
+		'2' as examItemType,
+		'' as isDetail,
+		'' as isCompare,
+		'' as lineChart,
+		er.exam_item_seq			
+		from bus_exam_result er
+		where er.exam_num =#{examNum} and er.charging_id=#{chargingId} and (er.exam_item_id is not null) and er.exam_item_id!='' and
+		
+		<choose>
+			<when test="flag=='1'.toString()">
+				(er.flag is not null) and er.flag!='Z' and er.flag!='W' and er.flag!=''
+			</when>			
+			<otherwise>
+				1 = 1
+			</otherwise>
+		</choose>
+		<if test="centerCode!=null and centerCode!=''">
+          and er.exam_center_id=#{centerCode,jdbcType=CHAR}  
+        </if>
+		
+		union
+		
+		select 
+		pr.exam_item_id as examItemId,
+		pr.d_item_name as itemName,
+		pr.item_result as examResult,
+		'' as examCategory,
+		'' as examItemCategory,
+		'' as itemUnit,
+		'' as refValue,
+		pr.flag,
+		'3' as examItemType,
+		'' as isDetail,
+		'' as isCompare,
+		'' as lineChart,
+		0 as exam_item_seq		
+		from bus_pacs_result pr 
+		where pr.exam_num =#{examNum} and pr.charging_id=#{chargingId} and (pr.exam_item_id is not null) and pr.exam_item_id!='' and
+		
+		<choose>
+			<when test="flag=='1'.toString()">
+				(pr.flag is not null) and pr.flag!='Z' and pr.flag!='W' and pr.flag!=''				
+			</when>			
+			<otherwise>
+				1 = 1
+			</otherwise>
+		</choose>
+		<if test="centerCode!=null and centerCode!=''">
+          and pr.exam_center_id=#{centerCode,jdbcType=CHAR}  
+        </if>
+		) items order by exam_item_seq asc
+	</select>
+	<!-- 获取体检总结论 -->
+	 <!--
+	<select id="selectExamSummary" resultType="ExamResult">
+	select distinct final_exam_result as finalExamResult,suggest,disease_name as diseaseName from bus_exam_summary where exam_num =#{examNum} order by disease_index asc 
+	</select>-->
+	
+	<select id="selectExamSummary" parameterType="hashmap" resultType="cn.hjw.model.ExamSummaryOption">
+	select code,name,content  from bus_exam_summary_option where exam_num =#{examNum} and (content is not null) and content!=''  
+	<if test="centerCode!=null and centerCode!=''">
+          and exam_center_id=#{centerCode,jdbcType=CHAR}  
+        </if>
+	order by show_order asc,sub_show_order asc
+	</select>
+</mapper>
